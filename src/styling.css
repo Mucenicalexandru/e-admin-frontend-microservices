@@ -1,0 +1,134 @@
+h1 {
+    margin-top: 15px;
+    font-family: 'Source Serif Pro', serif;
+    font-size: 30px;
+}
+
+h2 {
+    margin-top: 15px;
+    font-family: 'Source Serif Pro', serif;
+    font-size: 20px;
+}
+
+.float-right {
+    float: right;
+}
+
+.float-left {
+    float: left;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
+.orange {
+    color: orange;
+}
+
+.white {
+    color: white;
+}
+
+.grey {
+    color: grey;
+}
+
+.margin-top-25 {
+    margin-top: 25px;
+}
+
+.margin-top-15 {
+    margin-top: 15px;
+}
+
+.margin-25 {
+    margin: 25px;
+}
+
+.margin-bottom-25 {
+    margin-bottom: 25px;
+}
+
+.margin-right-10 {
+    margin-right: 10px;
+}
+
+.margin-right-5 {
+    margin-right: 5px;
+}
+
+.margin-left-10 {
+    margin-left: 10px;
+}
+
+.margin-left-5 {
+    margin-left: 5px;
+}
+
+.blue-underline {
+    margin-left: 5px;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.card {
+    width: 288px;
+    background-color: #c6e2de;
+}
+.my-card {
+    width: 288px;
+    background-color: #d2c6e2;
+}
+
+
+
+
+.center-text {
+    text-align: center;
+}
+
+.poll-input {
+    margin-top: 15px;
+    width: 262px;
+}
+
+.dropdown-width {
+    width: 200px;
+}
+
+.wrong-credentials {
+    text-align: center;
+    padding: 10px;
+    background-color: #f8a6a6;
+    margin-top: 15px;
+    border: solid 1px #124686;
+    color: #660101;
+    border-radius: 5px;
+    width : 209px;
+}
+
+.filter {
+    filter: blur(2.5px);
+}
+
+.shadow {
+    box-shadow : 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.floor-error {
+    text-align: center;
+    padding: 10px;
+    background-color: #f8a6a6;
+    margin-top: 15px;
+    border: solid 1px #124686;
+    color: #660101;
+    border-radius: 5px;
+    width : 286px;
+}
+

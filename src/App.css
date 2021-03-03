@@ -1,0 +1,146 @@
+#root {
+  margin-bottom: 50px;
+}
+
+
+.page-item.active .page-link{
+  background-color: #1f4253;
+  border-color: #eff1ef;
+}
+.page-link{
+  color: #1f4253;
+}
+.bg-success {
+  background-color: #43ce00 !important;
+  border-radius: 20px;
+}
+
+.bg-warning {
+  background-color: #9eda00 !important;
+  border-radius: 20px;
+}
+
+.bg-danger {
+  background-color: #fcb300 !important;
+  border-radius: 20px;
+}
+
+.bg-info {
+  background-color: #e07800 !important;
+  border-radius: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+/* Zebra striping */
+tr:nth-of-type(odd) {
+  background: #eee;
+}
+th {
+  background: #224453;
+  color: white;
+  font-weight: bold;
+}
+td, th {
+  width: 375px;
+  padding: 6px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  tr {
+    border: 1px solid #ccc;
+    margin-top: 20px;
+  }
+
+  td {
+
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+    padding-left: 50%;
+  }
+
+  td:before {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+
+  .index:nth-of-type(1):before { content: "#"; }
+  .ticket-title:nth-of-type(2):before { content: "Title"; }
+  .ticket-department:nth-of-type(3):before { content: "Department"; }
+  .ticket-opened-date:nth-of-type(4):before { content: "Date Opened"; }
+  .ticket-service-provider:nth-of-type(5):before { content: "Assigned Service"; }
+  .ticket-total-price:nth-of-type(6):before { content: "Price"; }
+  .ticket-close-date:nth-of-type(7):before { content: "Date Closed"; }
+  .ticket-status:nth-of-type(8):before { content: "Status"; }
+
+  .provider-ticket-opened-date:nth-of-type(3):before { content: "Opened date"; }
+  .provider-ticket-status:nth-of-type(4):before { content: "Status"; }
+  .ticket-type:nth-of-type(6):before { content: "Type"; }
+  .provider-ticket-price-offer:nth-of-type(7):before { content: "Make offer"; }
+
+  .won-ticket-type:nth-of-type(4):before { content: "Type"; }
+  .won-ticket-date-accepted:nth-of-type(5):before { content: "Date accepted"; }
+  .tickets-won:nth-of-type(7):before { content: "Status"; }
+
+
+  .building:nth-of-type(1):before { content: "Building"; }
+  .offers:nth-of-type(5):before { content: "Received Offers"; }
+  .ticket-accepted-date:nth-of-type(6):before { content: "Date Accepted"; }
+  .assigned-service:nth-of-type(7):before { content: "Assigned Provider"; }
+  .ticket-closed:nth-of-type(8):before { content: "Date Closed"; }
+  .close-ticket-button:nth-of-type(8):before { content: "Close ticket"; }
+  .status:nth-of-type(9):before { content: "Status"; }
+
+  .ticket-details:nth-of-type(3):before { content: "Details"; }
+
+
+  .poll-index:nth-of-type(1):before { content: "#"; }
+  .poll-description:nth-of-type(2):before { content: "Poll description"; }
+  .poll-status:nth-of-type(3):before { content: "Poll status"; }
+  .poll-vote-number:nth-of-type(4):before { content: "Total votes"; }
+  .poll-end-date:nth-of-type(5):before { content: "End date"; }
+  .poll-close-button:nth-of-type(6):before { content: "Close poll"; }
+  .poll-result-button:nth-of-type(7):before { content: "See results"; }
+
+  .ticket-details:nth-of-type(5):before { content: "Details"; }
+  .ticket-price:nth-of-type(6):before { content: "Price"; }
+  .ticket-make-offer:nth-of-type(7):before { content: "Make Offer"; }
+
+  .provider-firstName:nth-of-type(2):before { content: "First Name"; }
+  .provider-lastName:nth-of-type(3):before { content: "Last Name"; }
+  .provider-phone:nth-of-type(4):before { content: "Phone"; }
+  .provider-email:nth-of-type(5):before { content: "Email"; }
+  .provider-company:nth-of-type(6):before { content: "Company"; }
+  .provider-site:nth-of-type(7):before { content: "Website"; }
+  .provider-department:nth-of-type(8):before { content: "Department"; }
+  .provider-rating:nth-of-type(9):before { content: "Rating"; }
+
+}
+
+@media
+only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px) {
+
+}
