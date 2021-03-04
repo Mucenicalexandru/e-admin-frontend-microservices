@@ -122,8 +122,7 @@ function SeeBuildings(props) {
                                         pathname: 'edit-president',
                                         groupId: groupId,
                                         linkFromBuilding : true,
-                                        presidentId: building.president.userId,
-                                        buildingId: building.building.buildingId,
+                                        userId: building.president.userId,
                                         presidentFirstName : building.president.firstName,
                                         presidentLastName : building.president.lastName,
                                         presidentPhone : building.president.phone

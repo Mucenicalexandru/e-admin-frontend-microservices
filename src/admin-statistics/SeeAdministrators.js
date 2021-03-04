@@ -48,6 +48,7 @@ function SeeAdministrators(props) {
                         <td>
                             <Link to={{
                                 pathname : "/edit-administrator",
+                                userId : administrator.userId,
                                 administratorFirstName : administrator.firstName,
                                 administratorLastName : administrator.lastName,
                                 administratorPhone : administrator.phone

@@ -9,10 +9,11 @@ function EditAdministrator(props) {
     let groupId = props.location.groupId;
     let linkFromGroup = props.location.linkFromGroup;
 
+    let userId = props.location.userId;
     let administratorFirstName = props.location.administratorFirstName;
     let administratorLastName = props.location.administratorLastName;
     let administratorPhone = props.location.administratorPhone;
-    const [group, setGroup] = useState([]);
+
 
     const [redirect, setRedirect] = useState(false);
 
@@ -22,21 +23,9 @@ function EditAdministrator(props) {
         phone : administratorPhone
     })
 
-
-    useEffect(() => {
-    axios.get(`/api/group/${groupId}`, {
-        headers: {
-            Authorization: 'Bearer ' + localStorage.getItem('token')
-        }
-    })
-        .then(response => {
-            setGroup(response.data);
-        })
-    }, [groupId])
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put(`/api/edit-administrator/${group.administrator.id}/${groupId}`, administrator, {
+        axios.put(`/user/edit/${userId}`, administrator, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
@@ -44,7 +33,6 @@ function EditAdministrator(props) {
             .then(() => {
                 setRedirect(true);
             })
-
     }
 
     return (

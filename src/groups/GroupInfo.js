@@ -9,36 +9,20 @@ function GroupInfo(props) {
     let groupId = props.location.groupId;
     const [redirect, setRedirect] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [group, setGroup] = useState([]);
-    const [administrator, setAdministrator] = useState({});
-    const [censor, setCensor] = useState({});
+    const [response, setResponse] = useState([]);
+
 
     useEffect(() => {
-        axios.get(`/user/by-group-and-role/${groupId}/ADMINISTRATOR`, {
+        axios.get(`/group/group-administrator-censor/${groupId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
         })
-            .then(response => {
-                setAdministrator(response.data);
-            })
-        axios.get(`/user/by-group-and-role/${groupId}/CENSOR`, {
-            headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
-        })
-            .then(response => {
-                setCensor(response.data);
-            })
-        axios.get(`/group/get-by-id/${groupId}`, {
-            headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
-        })
-            .then(response => {
-                setGroup(response.data);
+            .then((response) => {
+                setResponse(response.data);
                 setIsLoading(false);
             })
+
     }, [groupId, isLoading])
 
     const deleteGroup = (e) => {
@@ -72,56 +56,72 @@ function GroupInfo(props) {
                 </div>}
             </div>
 
-            <h1 className="d-flex justify-content-center">{group.officialName}</h1>
+            {response.group &&
+                <div>
+                    <h1 className="d-flex justify-content-center">{response.group.officialName}</h1>
 
-            <p className={"center-text"}><i className="fas fa-envelope"> </i> <span className={"blue-underline"}>{group.email}</span></p>
-            {administrator.userId && <p className={"center-text"}><i className="fas fa-phone"> </i><span> {administrator.phone}</span></p>}
+                    <p className={"center-text"}><i className="fas fa-envelope"> </i> <span className={"blue-underline"}>{response.group.email}</span></p>
 
-            <img className="card mx-auto margin-bottom-25 shadow" src={`/images/${group.picture}`} alt={group.officialName} style={{"width" : "250px", "height" : "175px", "borderRadius" : "10px"}}/>
+                </div>
+            }
 
-            <Link to={{
-                pathname : "/see-location",
-                address : group.street + ", " + group.number + ", " + group.town
-            }}>
-                <p className={"center-text"}><i className="fas fa-map-marker-alt"> </i><span> See location </span></p>
 
-            </Link>
+            {response.administrator && <p className={"center-text"}><i className="fas fa-phone"> </i><span> {response.administrator.phone}</span></p>}
+
+
+            {response.group &&
+            <div>
+                <img className="card mx-auto margin-bottom-25 shadow" src={`/images/${response.group.picture}`}
+                     alt={response.group.officialName}
+                     style={{"width": "250px", "height": "175px", "borderRadius": "10px"}}/>
+
+                <Link to={{
+                    pathname : "/see-location",
+                    address : response.group.street + ", " + response.group.number + ", " + response.group.town
+                }}>
+                    <p className={"center-text"}><i className="fas fa-map-marker-alt"> </i><span> See location </span></p>
+                </Link>
+            </div>}
+
             {value && value.roles.includes("ADMIN") &&
             <div className="d-flex justify-content-center">
-                {administrator.userId ?
+                {response.administrator &&
                     <Link to={{
                         pathname: 'edit-administrator',
-                        groupId: group.groupId,
+                        groupId: groupId,
+                        userId : response.administrator.userId,
                         linkFromGroup : true,
-                        administratorFirstName : administrator.firstName,
-                        administratorLastName : administrator.lastName,
-                        administratorPhone : administrator.phone
+                        administratorFirstName : response.administrator.firstName,
+                        administratorLastName : response.administrator.lastName,
+                        administratorPhone : response.administrator.phone
                     }}>
                         <button className="btn btn-outline-secondary margin-right-5">Edit Administrator</button>
-                    </Link>
-                    :
+                    </Link>}
+
+                {!response.administrator && response.group &&
                     <Link to={{
                         pathname: 'add-administrator',
-                        groupId: group.groupId,
-                        email : group.email
+                        groupId: groupId,
+                        email : response.group.email
                     }}>
                         <button className="btn btn-outline-secondary margin-right-5">Add Administrator</button>
-                    </Link>
-                }
-                {censor.userId ?
+                    </Link>}
+
+                {response.censor ?
                     <Link to={{
                         pathname : 'edit-censor',
                         linkFromGroup : true,
-                        groupId : group.groupId,
-                        censorFirstName : censor.firstName,
-                        censorLastName : censor.lastName,
-                        censorPhone : censor.phone}}>
+                        groupId : groupId,
+                        userId : response.censor.userId,
+                        censorFirstName : response.censor.firstName,
+                        censorLastName : response.censor.lastName,
+                        censorPhone : response.censor.phone}}>
                         <button className="btn btn-outline-secondary margin-left-5">Edit Censor</button>
                     </Link>
                     :
                     <Link to={{
                         pathname : 'add-censor',
-                        groupId : group.groupId}}>
+                        groupId : groupId}}>
                         <button className="btn btn-outline-secondary margin-left-5">Add Censor</button>
                     </Link>
                 }

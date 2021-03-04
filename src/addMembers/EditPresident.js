@@ -6,12 +6,13 @@ import SaveButton from "../buttons/SaveButton";
 function EditPresident(props) {
 
     let groupId = props.location.groupId;
-    let buildingId = props.location.buildingId;
     let linkFromBuilding = props.location.linkFromBuilding;
+
+    let userId = props.location.userId;
     let presidentFirstName = props.location.presidentFirstName;
     let presidentLastName = props.location.presidentLastName;
     let presidentPhone = props.location.presidentPhone;
-    let presidentId = props.location.presidentId;
+
     const [redirect, setRedirect] = useState(false);
 
     const [president, setPresident] = useState({
@@ -22,7 +23,7 @@ function EditPresident(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put(`/api/edit-president/${buildingId}/${presidentId}`, president, {
+        axios.put(`/user/edit/${userId}`, president, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
@@ -30,7 +31,6 @@ function EditPresident(props) {
             .then(() => {
                 setRedirect(true);
             })
-
     }
 
     return (

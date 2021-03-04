@@ -7,10 +7,12 @@ function EditCensor(props) {
 
     let groupId = props.location.groupId;
     let linkFromGroup = props.location.linkFromGroup;
+
+    let userId = props.location.userId;
     let censorFirstName = props.location.censorFirstName;
     let censorLastName = props.location.censorLastName;
     let censorPhone = props.location.censorPhone;
-    const [group, setGroup] = useState([]);
+
     const [redirect, setRedirect] = useState(false);
 
     const [censor, setCensor] = useState({
@@ -19,20 +21,9 @@ function EditCensor(props) {
         phone : censorPhone
     })
 
-    useEffect(() => {
-        axios.get(`/api/group/${groupId}`, {
-            headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
-        })
-            .then(response => {
-                setGroup(response.data);
-            })
-    }, [groupId])
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.put(`/api/edit-censor/${group.censor.id}/${groupId}`, censor, {
+        axios.put(`/user/edit/${userId}`, censor, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
@@ -40,7 +31,6 @@ function EditCensor(props) {
             .then(() => {
                 setRedirect(true);
             })
-
     }
 
     return (

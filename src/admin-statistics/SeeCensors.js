@@ -48,6 +48,7 @@ function SeeCensors(props) {
                             <td>
                                 <Link to={{
                                     pathname : "/edit-censor",
+                                    userId : censor.userId,
                                     censorFirstName : censor.firstName,
                                     censorLastName : censor.lastName,
                                     censorPhone : censor.phone,
