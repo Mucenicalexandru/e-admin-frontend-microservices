@@ -57,7 +57,11 @@ function UserRegister(props) {
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:9191/group/get-all`)
+        axios.get(`/group/get-all`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        })
             .then(response => {
                 setGroupList(response.data);
                 setIsLoading(false);
@@ -65,7 +69,11 @@ function UserRegister(props) {
     }, [isLoading])
 
     useEffect(() =>{
-        axios.get(`http://localhost:9191/building/by-groupId/${groupId}`)
+        axios.get(`/building/by-groupId/${groupId}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        })
             .then(response => {
                 setBuildingList(response.data);
             })
@@ -73,7 +81,11 @@ function UserRegister(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post(`/user/`, userToAdd)
+        axios.post(`/user/`, userToAdd, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        })
             .then((response) => {
                 if(response.status === 201){
                     setSuccessfullyRegistered(true)
@@ -120,9 +132,10 @@ function UserRegister(props) {
                             })}
                         </select>
                     </div>
+                    {/*TODO set group and building required*/}
 {/*/!*SELECT GROUP*!/*/}
                     <div className="input-group mb-3">
-                        <select className="custom-select margin-top-15" id="inputGroupSelect01" required onChange={handleGroupChange}>
+                        <select className="custom-select margin-top-15" id="inputGroupSelect01"  onChange={handleGroupChange}>
                             <option value="" selected>Select group...</option>
                             {groupList.map((group, index) => {
                                 return <option key={index} value={group.groupId}>{group.shortName}</option>
@@ -131,7 +144,7 @@ function UserRegister(props) {
                     </div>
 {/*/!*SELECT BUILDING*!/*/}
                     <div className="input-group mb-3">
-                        <select className="custom-select" id="inputGroupSelect01" required onChange={handleBuildingChange}>
+                        <select className="custom-select" id="inputGroupSelect01"  onChange={handleBuildingChange}>
                             <option value="" selected>Select building...</option>
                             {buildingList && buildingList.map((building, index) => {
                                 return <option key={index} value={building.buildingId}>{building.street + ", " + building.number}</option>

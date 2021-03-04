@@ -29,8 +29,8 @@ function AddPresident(props) {
             .then(() => {
                 setRedirect(true);
             });
-    }
 
+    }
 
     return (
         <div>

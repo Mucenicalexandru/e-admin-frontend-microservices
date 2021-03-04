@@ -10,9 +10,26 @@ function GroupInfo(props) {
     const [redirect, setRedirect] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [group, setGroup] = useState([]);
+    const [administrator, setAdministrator] = useState({});
+    const [censor, setCensor] = useState({});
 
     useEffect(() => {
-
+        axios.get(`/user/by-group-and-role/${groupId}/ADMINISTRATOR`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+            .then(response => {
+                setAdministrator(response.data);
+            })
+        axios.get(`/user/by-group-and-role/${groupId}/CENSOR`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+            .then(response => {
+                setCensor(response.data);
+            })
         axios.get(`/group/get-by-id/${groupId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -58,27 +75,27 @@ function GroupInfo(props) {
             <h1 className="d-flex justify-content-center">{group.officialName}</h1>
 
             <p className={"center-text"}><i className="fas fa-envelope"> </i> <span className={"blue-underline"}>{group.email}</span></p>
-            {group.administrator && <p className={"center-text"}><i className="fas fa-phone"> </i><span> {group.administrator.phone}</span></p>}
+            {administrator.userId && <p className={"center-text"}><i className="fas fa-phone"> </i><span> {administrator.phone}</span></p>}
 
             <img className="card mx-auto margin-bottom-25 shadow" src={`/images/${group.picture}`} alt={group.officialName} style={{"width" : "250px", "height" : "175px", "borderRadius" : "10px"}}/>
-            {group.groupAddress &&
+
             <Link to={{
                 pathname : "/see-location",
                 address : group.street + ", " + group.number + ", " + group.town
             }}>
                 <p className={"center-text"}><i className="fas fa-map-marker-alt"> </i><span> See location </span></p>
 
-            </Link>}
+            </Link>
             {value && value.roles.includes("ADMIN") &&
             <div className="d-flex justify-content-center">
-                {group.administrator && group.administrator.id ?
+                {administrator.userId ?
                     <Link to={{
                         pathname: 'edit-administrator',
                         groupId: group.groupId,
                         linkFromGroup : true,
-                        administratorFirstName : group.administrator.firstName,
-                        administratorLastName : group.administrator.lastName,
-                        administratorPhone : group.administrator.phone
+                        administratorFirstName : administrator.firstName,
+                        administratorLastName : administrator.lastName,
+                        administratorPhone : administrator.phone
                     }}>
                         <button className="btn btn-outline-secondary margin-right-5">Edit Administrator</button>
                     </Link>
@@ -91,14 +108,14 @@ function GroupInfo(props) {
                         <button className="btn btn-outline-secondary margin-right-5">Add Administrator</button>
                     </Link>
                 }
-                {group.censor && group.censor.id ?
+                {censor.userId ?
                     <Link to={{
                         pathname : 'edit-censor',
                         linkFromGroup : true,
                         groupId : group.groupId,
-                        censorFirstName : group.censor.firstName,
-                        censorLastName : group.censor.lastName,
-                        censorPhone : group.censor.phone}}>
+                        censorFirstName : censor.firstName,
+                        censorLastName : censor.lastName,
+                        censorPhone : censor.phone}}>
                         <button className="btn btn-outline-secondary margin-left-5">Edit Censor</button>
                     </Link>
                     :

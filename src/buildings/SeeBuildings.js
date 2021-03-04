@@ -11,13 +11,14 @@ function SeeBuildings(props) {
     const [redirect, setRedirect] = useState(false);
 
     useEffect(() => {
-        axios.get(`/building/by-groupId/${groupId}`, {
+        axios.get(`/building/buildings-and-presidents/${groupId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
         })
             .then(response => {
                 setBuildingsList(response.data);
+                console.log(response.data)
             })
     }, [groupId, redirect])
 
@@ -39,16 +40,16 @@ function SeeBuildings(props) {
             </div>
 
             {buildingList && buildingList.map((building, index) => {
-                if(value.buildingId === building.id){
+                if(value.buildingId === building.building.buildingId){
                     return <div className="card mx-auto margin-top-25 my-card shadow" key={index}>
                         <div className="card-body">
                             <h5 className="card-title">Building {index+1}</h5>
-                            <h6 className="card-subtitle mb-2 text-muted">{building.street} {building.number}</h6>
+                            <h6 className="card-subtitle mb-2 text-muted">{building.building.street} {building.building.number}</h6>
                             <div className={"margin-top-25 margin-bottom-25"}>
-                                <p className="card-text">Building name : {building.buildingName}</p>
-                                <p className="card-text">Building entrance : {building.entrance}</p>
-                                {/*<p>President : {building.president === null ? "No president" : building.president.lastName + " " + building.president.firstName}</p>*/}
-                                {/*<p><i className="fas fa-envelope"> </i> {building.president === null ? "No email" : building.president.email}</p>*/}
+                                <p className="card-text">Building name : {building.building.buildingName}</p>
+                                <p className="card-text">Building entrance : {building.building.entrance}</p>
+                                <p>President : {building.president === null ? "No president" : building.president.lastName + " " + building.president.firstName}</p>
+                                <p><i className="fas fa-envelope"> </i> {building.president === null ? "No email" : building.president.email}</p>
 
                             </div>
                             {value && value.roles.includes("ADMIN") ?
@@ -58,8 +59,8 @@ function SeeBuildings(props) {
                                     <Link to={{
                                         pathname: 'edit-president',
                                         groupId: groupId,
-                                        presidentId: building.president.id,
-                                        buildingId: building.buildingId,
+                                        presidentId: building.president.userId,
+                                        buildingId: building.building.buildingId,
                                         presidentFirstName : building.president.firstName,
                                         presidentLastName : building.president.lastName,
                                         presidentPhone : building.president.phone
@@ -73,7 +74,7 @@ function SeeBuildings(props) {
                                     <Link to={{
                                         pathname: 'add-president',
                                         groupId: groupId,
-                                        buildingId: building.buildingId
+                                        buildingId: building.building.buildingId
                                     }}>
                                         <button className="btn btn-outline-secondary margin-right-10 margin-left-10">Add
                                             President
@@ -85,7 +86,7 @@ function SeeBuildings(props) {
 
                             {value && value.roles.includes("ADMIN") &&
                             <button className="btn btn-outline-danger float-right" onClick={() => {
-                                axios.delete(`/api/delete-building/${building.id}`, {
+                                axios.delete(`/api/delete-building/${building.building.buildingId}`, {
                                     headers: {
                                         Authorization: 'Bearer ' + localStorage.getItem('token')
                                     }
@@ -105,10 +106,10 @@ function SeeBuildings(props) {
                     return <div className="card mx-auto margin-top-25 card shadow" key={index}>
                         <div className="card-body">
                             <h5 className="card-title">Building {index+1}</h5>
-                            <h6 className="card-subtitle mb-2 text-muted">{building.street} {building.number}</h6>
+                            <h6 className="card-subtitle mb-2 text-muted">{building.building.street} {building.building.number}</h6>
                             <div className={"margin-top-25 margin-bottom-25"}>
-                                <p className="card-text">Building name : {building.buildingName}</p>
-                                <p className="card-text">Building entrance : {building.entrance}</p>
+                                <p className="card-text">Building name : {building.building.buildingName}</p>
+                                <p className="card-text">Building entrance : {building.building.entrance}</p>
                                 <p>President : {building.president === null ? "No president" : building.president.lastName + " " + building.president.firstName}</p>
                                 <p><i className="fas fa-envelope"> </i> {building.president === null ? "No email" : building.president.email}</p>
 
@@ -121,8 +122,8 @@ function SeeBuildings(props) {
                                         pathname: 'edit-president',
                                         groupId: groupId,
                                         linkFromBuilding : true,
-                                        presidentId: building.president.id,
-                                        buildingId: building.id,
+                                        presidentId: building.president.userId,
+                                        buildingId: building.building.buildingId,
                                         presidentFirstName : building.president.firstName,
                                         presidentLastName : building.president.lastName,
                                         presidentPhone : building.president.phone
@@ -136,7 +137,7 @@ function SeeBuildings(props) {
                                     <Link to={{
                                         pathname: 'add-president',
                                         groupId: groupId,
-                                        buildingId: building.buildingId
+                                        buildingId: building.building.buildingId
                                     }}>
                                         <button className="btn btn-outline-secondary margin-right-10 margin-left-10">Add
                                             President
@@ -148,7 +149,7 @@ function SeeBuildings(props) {
 
                             {value && value.roles.includes("ADMIN") &&
                             <button className="btn btn-outline-danger float-right" onClick={() => {
-                                axios.delete(`/api/delete-building/${building.id}`, {
+                                axios.delete(`/api/delete-building/${building.building.buildingId}`, {
                                     headers: {
                                         Authorization: 'Bearer ' + localStorage.getItem('token')
                                     }

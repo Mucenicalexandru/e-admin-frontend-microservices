@@ -20,6 +20,7 @@ import AddCensor from "./addMembers/AddCensor";
 import EditPresident from "./addMembers/EditPresident";
 import EditCensor from "./addMembers/EditCensor";
 import AdminUserStatistics from "./admin-statistics/AdminUserStatistics";
+import {MapContainer} from "./google-maps/Maps";
 
 function App() {
   return (
@@ -47,7 +48,9 @@ function App() {
                 <Route exact path={'/add-censor'} component={AddCensor}/>
                 <Route exact path={'/edit-censor'} component={EditCensor}/>
 
-              <Route exact path={'/users-statistics'} component={AdminUserStatistics}/>
+                <Route exact path={'/users-statistics'} component={AdminUserStatistics}/>
+
+                <Route exact path={'/see-location'} component={MapContainer}/>
 
 
           </Router>

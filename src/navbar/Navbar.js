@@ -4,6 +4,7 @@ import AuthenticationButton from "../login/AuthenticationButton";
 import {Link} from "react-router-dom";
 import AdminNavbar from "./AdminNavbar";
 import UserNavbar from "./UserNavbar";
+import AdministratorNavbar from "./AdministratorNavbar";
 
 const NavStyle = styled.div`
   background-color: #1f4253;
@@ -20,7 +21,7 @@ function Navbar(props) {
 
                     <UserNavbar/>
                     {/*<PresidentNavbar/>*/}
-                    {/*<AdministratorNavbar/>*/}
+                    <AdministratorNavbar/>
                     {/*<ServiceProviderNavbar/>*/}
                     <AdminNavbar/>
 
