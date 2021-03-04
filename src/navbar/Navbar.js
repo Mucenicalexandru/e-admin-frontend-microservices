@@ -1,16 +1,22 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
 import AuthenticationButton from "../login/AuthenticationButton";
 import {Link} from "react-router-dom";
 import AdminNavbar from "./AdminNavbar";
 import UserNavbar from "./UserNavbar";
 import AdministratorNavbar from "./AdministratorNavbar";
+import RegisterLink from "../registration/RegisterLink";
+import {UserContext} from "../context/UserContext";
+import PresidentNavbar from "./PresidentNavbar";
 
 const NavStyle = styled.div`
   background-color: #1f4253;
 `
 
 function Navbar(props) {
+
+    const value = useContext(UserContext);
+
     return (
         <div>
             <NavStyle>
@@ -20,7 +26,7 @@ function Navbar(props) {
 {/*NAVBAR BY ROLE*/}
 
                     <UserNavbar/>
-                    {/*<PresidentNavbar/>*/}
+                    <PresidentNavbar/>
                     <AdministratorNavbar/>
                     {/*<ServiceProviderNavbar/>*/}
                     <AdminNavbar/>
@@ -28,7 +34,7 @@ function Navbar(props) {
 {/*GENERAL NAVBAR*/}
 {/*                    <ProvidersListNavbarComponent/>*/}
 {/*                    <Profile/>*/}
-{/*                    <NavbarOptionsForRegister/>*/}
+                    {value ? null : <RegisterLink/>}
                     <AuthenticationButton/>
                 </div>
             </NavStyle>

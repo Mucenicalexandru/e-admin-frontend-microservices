@@ -6,41 +6,25 @@ import {UserContext} from "../context/UserContext";
 function PendingButton() {
 
     const value = useContext(UserContext);
-    const [group, setGroup] = useState({});
-    let counter = 0;
+
+    const [pendingList, setPendingList] = useState([]);
 
     useEffect(() => {
-        value &&
-        axios.get(`/group/get-by-id/${value.groupId}`, {
+        axios.get(`/user/pending/${value.groupId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),
             }
         })
-            .then(response => {
-                setGroup(response.data);
+            .then((response) => {
+                setPendingList(response.data);
             })
     }, [value])
 
-    // const getUserRequestCounter = () => {
-    //     if(group.buildings && value){
-    //         group.buildings.forEach((building) =>{
-    //             building.users.forEach((user) => {
-    //                 if(user.userStatus === "PENDING"){
-    //                     counter = counter + 1;
-    //                 }
-    //             })
-    //         })
-    //
-    //     }
-    //     return counter;
-    // }
 
     return (
         <Link to={{
-            pathname : "/pending-requests",
-            userId : value.userId,
-            groupId : group.groupId
-        }} className="nav-link disabled" style={{"color" : "white"}}>Join requests <span style={{"backgroundColor" : "white", "color" : "red", "padding" : "1.5px", "borderRadius" : "5px"}}>3</span> </Link>
+            pathname : "/pending-requests"
+        }} className="nav-link disabled" style={{"color" : "white"}}>Join requests <span style={{"backgroundColor" : "white", "color" : "red", "padding" : "1.5px", "borderRadius" : "5px"}}>{pendingList.length}</span> </Link>
     );
 }
 

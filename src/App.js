@@ -21,6 +21,9 @@ import EditPresident from "./addMembers/EditPresident";
 import EditCensor from "./addMembers/EditCensor";
 import AdminUserStatistics from "./admin-statistics/AdminUserStatistics";
 import {MapContainer} from "./google-maps/Maps";
+import PendingRequestsList from "./user-access/PendingRequestsList";
+import SeeTickets from "./tickets/SeeTickets";
+import AddNewTicket from "./tickets/AddNewTicket";
 
 function App() {
   return (
@@ -49,6 +52,11 @@ function App() {
                 <Route exact path={'/edit-censor'} component={EditCensor}/>
 
                 <Route exact path={'/users-statistics'} component={AdminUserStatistics}/>
+
+                <Route exact path={'/pending-requests'} component={PendingRequestsList}/>
+
+                <Route exact path={'/tickets'} component={SeeTickets}/>
+                <Route exact path={'/add-ticket'} component={AddNewTicket}/>
 
                 <Route exact path={'/see-location'} component={MapContainer}/>
 
