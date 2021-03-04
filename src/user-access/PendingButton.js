@@ -24,7 +24,7 @@ function PendingButton() {
     return (
         <Link to={{
             pathname : "/pending-requests"
-        }} className="nav-link disabled" style={{"color" : "white"}}>Join requests <span style={{"backgroundColor" : "white", "color" : "red", "padding" : "1.5px", "borderRadius" : "5px"}}>{pendingList.length}</span> </Link>
+        }} className="nav-link disabled" style={{"color" : "white"}}><i className="fas fa-user-plus"> </i> Join requests <span style={{"backgroundColor" : "white", "color" : "red", "padding" : "1.5px", "borderRadius" : "5px"}}>{pendingList.length}</span> </Link>
     );
 }
 

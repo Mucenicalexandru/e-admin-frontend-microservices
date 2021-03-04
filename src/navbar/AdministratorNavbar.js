@@ -8,7 +8,6 @@ function AdministratorNavbar(props) {
 
     const value = useContext(UserContext);
     const [group, setGroup] = useState({});
-    let counter = 0;
 
     useEffect(() => {
         value &&
@@ -22,26 +21,16 @@ function AdministratorNavbar(props) {
             })
     }, [value])
 
-    // const getOffersNumber = () => {
-    //     if(group.buildings && value){
-    //         group.buildings.forEach((building) =>{
-    //             building.tickets.forEach((ticket) => {
-    //                 counter = counter + ticket.pendingServiceOffers.length;
-    //             })
-    //         })
-    //     }
-    //     return counter;
-    // }
 
     return (
         <>
-            {/*ADMINISTRATOR SERVICE OFFERS RECEIVED*/}
+{/*ADMINISTRATOR SERVICE OFFERS RECEIVED*/}
             {value && value.roles.includes("ADMINISTRATOR") &&
             <Link to={{
                 pathname : "/see-offers",
                 groupId : group.groupId}} style={{"color" : "white"}} className="nav-link" >Service Offers<span style={{"backgroundColor" : "white", "color" : "red", "padding" : "1.5px", "borderRadius" : "5px"}}>3</span></Link>}
 
-            {/*ADMINISTRATOR JOIN REQUESTS*/}
+{/*ADMINISTRATOR JOIN REQUESTS*/}
             {value && value.roles.includes("ADMINISTRATOR") && <PendingButton/>}
         </>
     );

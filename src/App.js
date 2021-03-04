@@ -24,6 +24,10 @@ import {MapContainer} from "./google-maps/Maps";
 import PendingRequestsList from "./user-access/PendingRequestsList";
 import SeeTickets from "./tickets/SeeTickets";
 import AddNewTicket from "./tickets/AddNewTicket";
+import SeePolls from "./poll/SeePolls";
+import AddPoll from "./poll/AddPoll";
+import Results from "./poll/Results";
+import TicketsAdministratorView from "./tickets/TicketsAdministratorView";
 
 function App() {
   return (
@@ -57,6 +61,12 @@ function App() {
 
                 <Route exact path={'/tickets'} component={SeeTickets}/>
                 <Route exact path={'/add-ticket'} component={AddNewTicket}/>
+
+                <Route exact path={'/add-poll'} component={AddPoll}/>
+                <Route exact path={'/see-polls'} component={SeePolls}/>
+                <Route exact path={'/see-poll-result'} component={Results}/>
+
+                <Route exact path={'/see-offers'} component={TicketsAdministratorView}/>
 
                 <Route exact path={'/see-location'} component={MapContainer}/>
 

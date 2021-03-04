@@ -22,7 +22,7 @@ function Navbar(props) {
             <NavStyle>
                 <div className="nav justify-content">
                     <Link to={"/"} className="nav-link" style={{"color": "white"}}>
-                        Home</Link>
+                        <i className="fas fa-home"> </i> Home</Link>
 {/*NAVBAR BY ROLE*/}
 
                     <UserNavbar/>

@@ -14,7 +14,7 @@ function UserNavbar(props) {
                     <i className="fas fa-users"> </i> My Groups</Link>
                 :
                 <Link className="nav-link" to={"/groups"} style={{"color": "white"}}>
-                    Groups</Link>
+                    <i className="fas fa-users"> </i> Groups</Link>
             }
 
 {/*MY BUILDINGS*/}
