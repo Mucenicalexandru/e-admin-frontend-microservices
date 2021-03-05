@@ -8,6 +8,7 @@ function AdministratorNavbar(props) {
 
     const value = useContext(UserContext);
     const [group, setGroup] = useState({});
+    const [activeOffers, setActiveOffers] = useState(0);
 
     useEffect(() => {
         value &&
@@ -19,6 +20,8 @@ function AdministratorNavbar(props) {
             .then(response => {
                 setGroup(response.data);
             })
+
+        axios.get(``)
     }, [value])
 
 

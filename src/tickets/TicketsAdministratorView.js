@@ -2,6 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {Link} from "react-router-dom";
 import Modal from "react-modal";
+import ReactStars from "react-rating-stars-component";
 import {UserContext} from "../context/UserContext";
 
 function TicketsAdministratorView(props) {
@@ -37,9 +38,14 @@ function TicketsAdministratorView(props) {
         setSecondModalIsOpen(false);
     }
 
-    const [ticketList, setTicketList] = useState([]);
+    const [responseList, setResponseList] = useState([]);
     const [group, setGroup] = useState({});
     const [building, setBuilding] = useState({});
+    const [ticketId, setTicketId] = useState("");
+    const [serviceProviderInModal, setServiceProviderInModal] = useState({});
+    const [rating, setRating] = useState("");
+    const [buttonVisibility, setButtonVisibility] = useState(true);
+    const [reset, setReset] = useState(true);
 
     useEffect(() => {
         axios.get(`/group/get-by-id/${value.groupId}`)
@@ -47,12 +53,55 @@ function TicketsAdministratorView(props) {
                 setGroup(response.data);
             })
 
-        axios.get(`/ticket/by-group/${value.groupId}`)
+        axios.get(`/ticket/all-by-group-with-pending-offers/${value.groupId}`)
             .then((response) => {
-                setTicketList(response.data);
+                setResponseList(response.data);
             })
 
-    }, [value]);
+    }, [value, reset]);
+
+    const [review, setReview] = useState({
+        title : "",
+        starNumber : 0,
+        review : "",
+        user : {
+
+        }
+    })
+
+    const ratingChanged = (newRating) => {
+        const s = {...review};
+        switch (newRating){
+            case 1 :
+                setRating("Not recommended");
+                s.starNumber = 1;
+                setReview(s);
+                break;
+            case 2 :
+                setRating("Poor");
+                s.starNumber = 2;
+                setReview(s);
+                break;
+            case 3 :
+                setRating("Acceptable");
+                s.starNumber = 3;
+                setReview(s);
+                break;
+            case 4 :
+                setRating("Good");
+                s.starNumber = 4;
+                setReview(s);
+                break;
+            case 5 :
+                setRating("Excellent");
+                s.starNumber = 5;
+                setReview(s);
+                break;
+            default :
+                break;
+        }
+    };
+
 
 
     return (
@@ -60,6 +109,62 @@ function TicketsAdministratorView(props) {
 
             <h1 className="d-flex justify-content-center">{group.officialName}</h1>
             <img className="card mx-auto shadow" src={`/images/${group.picture}`} alt={group.officialName} style={{"width" : "250px", "height" : "175px", "marginBottom" : "25px", "borderRadius": "10px"}}/>
+
+            <div className={"margin-top-25"}>
+
+                <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
+                    <button type="button" className="btn btn-outline-info" onClick={(e) => {
+                        e.preventDefault();
+                        setButtonVisibility(!buttonVisibility);
+                    }}>Advanced Search</button>
+                </div>
+
+                <div hidden={buttonVisibility}>
+                    <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
+                        <button type="button" className="btn btn-success margin-right-10" onClick={(e)=> {
+                            e.preventDefault();
+                            axios.get(`/tickets/all-by-group-and-status-with-pending-offers/${value.groupId}/opened`, {
+                                headers: {
+                                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                }
+                            })
+                                .then(response => {
+                                    setResponseList(response.data);
+                                })
+                        }}>Opened tickets</button>
+                        <button type="button" className="btn btn-warning margin-right-10" onClick={(e)=> {
+                            e.preventDefault();
+                            axios.get(`/tickets/all-by-group-and-status-with-pending-offers/${value.groupId}/in progress`, {
+                                headers: {
+                                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                }
+                            })
+                                .then(response => {
+                                    setResponseList(response.data);
+                                })
+                        }}>In Progress tickets</button>
+                        <button type="button" className="btn btn-danger margin-right-10" onClick={(e)=> {
+                            e.preventDefault();
+                            axios.get(`/tickets/all-by-group-and-status-with-pending-offers/${value.groupId}/closed`, {
+                                headers: {
+                                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                }
+                            })
+                                .then(response => {
+                                    setResponseList(response.data);
+                                })
+                        }}>Closed Tickets</button>
+                    </div>
+
+                    <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
+                        <button type="button" className="btn btn-outline-info btn-sm" hidden={buttonVisibility} onClick={(e) => {
+                            e.preventDefault();
+                            setButtonVisibility(!buttonVisibility);
+                            setReset(!reset);
+                        }}>Reset search</button>
+                    </div>
+                </div>
+            </div>
 
             <div>
                 <table>
@@ -77,12 +182,12 @@ function TicketsAdministratorView(props) {
                     </tr>
                     </thead>
                     <tbody>
-                    {ticketList.map((ticket, index) => {
-                        if(ticket.status === "opened"){
+                    {responseList.map((response, index) => {
+                        if(response.ticket.status === "opened"){
                             return <tr className="openedTickets">
                                 <td className={"building"}><button className="btn btn-outline-dark btn-sm" onClick={(e) => {
                                     e.preventDefault();
-                                    axios.get(`/building/building-and-president/${ticket.buildingId}`, {
+                                    axios.get(`/building/building-and-president/${response.ticket.buildingId}`, {
                                         headers: {
                                             Authorization: 'Bearer ' + localStorage.getItem('token'),
                                         }
@@ -92,48 +197,47 @@ function TicketsAdministratorView(props) {
                                         })
                                     setSecondModalIsOpen(true);
                                 }}>See address</button></td>
-                                <td className={"ticket-title"}>{ticket.title}</td>
-                                <td className={"ticket-department"}>{ticket.department}</td>
-                                <td className={"ticket-opened-date"}>{ticket.dateOpened}</td>
-                                {/*TODO to fix here pending service offer will contain a ticket id*/}
-                                {/*{ticket.pendingServiceOffers.length > 0*/}
-                                {/*    ?*/}
-                                {/*    ticket.pendingServiceOffers.length === 1*/}
-                                {/*        ?*/}
-                                {/*        <td className="offers">*/}
-                                {/*            <Link to={{*/}
-                                {/*                pathname : '/pending-offers',*/}
-                                {/*                ticketId : ticket.id,*/}
-                                {/*                groupId : groupId,*/}
-                                {/*                buildingId : building.id}}>*/}
-                                {/*                <button className="btn btn-outline-success btn-sm">{ticket.pendingServiceOffers.length} Offer</button>*/}
-                                {/*            </Link>*/}
-                                {/*        </td>*/}
-                                {/*        :*/}
-                                {/*        <td className="offers">*/}
-                                {/*            <Link to={{*/}
-                                {/*                pathname : '/pending-offers',*/}
-                                {/*                ticketId : ticket.id,*/}
-                                {/*                groupId : groupId,*/}
-                                {/*                buildingId : building.id}}>*/}
-                                {/*                <button className="btn btn-outline-success btn-sm">{ticket.pendingServiceOffers.length} Offers</button>*/}
-                                {/*            </Link>*/}
-                                {/*        </td>*/}
-                                {/*    :*/}
-                                {/*    <td className="offers"><i className={"red"}>No offers</i></td>*/}
-                                {/*}*/}
-                                <td className="offers"><i className={"red"}>TO FIX</i></td>
+                                <td className={"ticket-title"}>{response.ticket.title}</td>
+                                <td className={"ticket-department"}>{response.ticket.department}</td>
+                                <td className={"ticket-opened-date"}>{response.ticket.dateOpened}</td>
+
+                                {response.pendingOffer.length > 0
+                                    ?
+                                    response.pendingOffer.length === 1
+                                        ?
+                                        <td className="offers">
+                                            <Link to={{
+                                                pathname : '/pending-offers',
+                                                ticketId : response.ticket.ticketId,
+                                                groupId : value.groupId,
+                                                buildingId : building.id}}>
+                                                <button className="btn btn-outline-success btn-sm">{response.pendingOffer.length} Offer</button>
+                                            </Link>
+                                        </td>
+                                        :
+                                        <td className="offers">
+                                            <Link to={{
+                                                pathname : '/pending-offers',
+                                                ticketId : response.ticket.ticketId
+                                                }}>
+                                                <button className="btn btn-outline-success btn-sm">{response.pendingOffer.length} Offers</button>
+                                            </Link>
+                                        </td>
+                                    :
+                                    <td className="offers"><i className={"red"}>No offers</i></td>
+                                }
+
                                 <td className={"ticket-accepted-date"}>-</td>
                                 <td className={"assigned-service"}>-</td>
                                 <td className={"ticket-closed"}>-</td>
-                                <td className="status"><span className={"green"}>{ticket.status}</span></td>
+                                <td className="status"><span className={"green"}>{response.ticket.status}</span></td>
                             </tr>
-                        }else if(ticket.status === "closed"){
+                        }else if(response.ticket.status === "closed"){
                             return <tr className="closedTickets">
                                 <td className={"building"}>
                                     <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
                                         e.preventDefault();
-                                        axios.get(`/building/${ticket.buildingId}`, {
+                                        axios.get(`/building/building-and-president/${response.ticket.buildingId}`, {
                                             headers: {
                                                 Authorization: 'Bearer ' + localStorage.getItem('token'),
                                             }
@@ -145,29 +249,29 @@ function TicketsAdministratorView(props) {
                                     }}>See address
                                     </button>
                                 </td>
-                                <td className={"ticket-title"}>{ticket.title}</td>
-                                <td className={"ticket-department"}>{ticket.department}</td>
-                                <td className={"ticket-opened-date"}>{ticket.dateOpened}</td>
+                                <td className={"ticket-title"}>{response.ticket.title}</td>
+                                <td className={"ticket-department"}>{response.ticket.department}</td>
+                                <td className={"ticket-opened-date"}>{response.ticket.dateOpened}</td>
                                 <td className="offers"><i className={"green"}>Offer accepted</i></td>
-                                <td className={"ticket-accepted-date"}>{ticket.dateAccepted}</td>
-                                {/*<td className={"assigned-service"}>*/}
-                                {/*    <Link to={{*/}
-                                {/*        pathname : '/assigned-service-provider',*/}
-                                {/*        providerId : ticket.assignedServiceProvider.id,*/}
-                                {/*        groupId : groupId}}>{ticket.assignedServiceProvider.firstName + " " + ticket.assignedServiceProvider.lastName}*/}
-                                {/*    </Link>*/}
-                                {/*</td>*/}
+                                <td className={"ticket-accepted-date"}>{response.ticket.dateAccepted}</td>
+                                <td className={"assigned-service"}>
+                                    <Link to={{
+                                        pathname : '/assigned-service-provider',
+                                        providerId : response.pendingOffer.serviceProviderUserId,
+                                        groupId : value.groupId}}>{response.pendingOffer.serviceProviderUserId + " " + response.pendingOffer.serviceProviderUserId}
+                                    </Link>
+                                </td>
                                 {/*TODO to fix here*/}
                                 <td className="offers"><i className={"red"}>TO FIX</i></td>
-                                <td className={"ticket-closed"}>{ticket.dateClosed}</td>
-                                <td className="status"><span className={"red"}>{ticket.status}</span></td>
+                                <td className={"ticket-closed"}>{response.ticket.dateClosed}</td>
+                                <td className="status"><span className={"red"}>{response.ticket.status}</span></td>
                             </tr>
                         }else
                             return <tr className="progressTickets">
                                 <td className={"building"}>
                                     <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
                                         e.preventDefault();
-                                        axios.get(`/building/${ticket.buildingId}`, {
+                                        axios.get(`/building/${response.ticket.buildingId}`, {
                                             headers: {
                                                 Authorization: 'Bearer ' + localStorage.getItem('token'),
                                             }
@@ -179,36 +283,36 @@ function TicketsAdministratorView(props) {
                                     }}>See address
                                     </button>
                                 </td>
-                                <td className={"ticket-title"}>{ticket.title}</td>
-                                <td className={"ticket-department"}>{ticket.department}</td>
-                                <td className={"ticket-opened-date"}>{ticket.dateOpened}</td>
+                                <td className={"ticket-title"}>{response.ticket.title}</td>
+                                <td className={"ticket-department"}>{response.ticket.department}</td>
+                                <td className={"ticket-opened-date"}>{response.ticket.dateOpened}</td>
                                 <td className="offers"><i className={"green"}>Offer accepted</i></td>
-                                <td className={"ticket-accepted-date"}>{ticket.dateAccepted}</td>
-                                {/*<td className={"assigned-service"}>*/}
-                                {/*    <Link to={{*/}
-                                {/*        pathname : '/assigned-service-provider',*/}
-                                {/*        providerId : ticket.assignedServiceProvider.id,*/}
-                                {/*        groupId : groupId}}>{ticket.assignedServiceProvider.firstName + " " + ticket.assignedServiceProvider.lastName}*/}
-                                {/*    </Link>*/}
-                                {/*</td>*/}
-                                {/*<td className={"ticket-closed"}>*/}
-                                {/*    <button className="btn btn-outline-dark btn-sm" onClick={(e) => {*/}
-                                {/*        e.preventDefault();*/}
-                                {/*        axios.get(`/api/user/${ticket.assignedServiceProvider.id}`, {*/}
-                                {/*            headers: {*/}
-                                {/*                Authorization: 'Bearer ' + localStorage.getItem('token'),*/}
-                                {/*            }*/}
-                                {/*        })*/}
-                                {/*            .then(response => {*/}
-                                {/*                setServiceProviderInModal(response.data);*/}
-                                {/*                setTicketId(ticket.id);*/}
-                                {/*            })*/}
-                                {/*        setIsOpen(true)*/}
-                                {/*        setRating("")}*/}
-                                {/*    }>Mark as done*/}
-                                {/*    </button>*/}
-                                {/*</td>*/}
-                                <td className="status"><span className={"orange"}>{ticket.status}</span></td>
+                                <td className={"ticket-accepted-date"}>{response.ticket.dateAccepted}</td>
+                                <td className={"assigned-service"}>
+                                    <Link to={{
+                                        pathname : '/assigned-service-provider',
+                                        providerId : response.ticket.assignedServiceProviderUserId,
+                                        groupId : value.groupId}}>{response.ticket.assignedServiceProviderUserId + " " + response.ticket.assignedServiceProviderUserId}
+                                    </Link>
+                                </td>
+                                <td className={"ticket-closed"}>
+                                    <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
+                                        e.preventDefault();
+                                        axios.get(`/user/${response.ticket.assignedServiceProviderUserId}`, {
+                                            headers: {
+                                                Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                            }
+                                        })
+                                            .then(response => {
+                                                setServiceProviderInModal(response.data);
+                                                response.ticket && setTicketId(response.ticket.ticketId);
+                                            })
+                                        setIsOpen(true)
+                                        setRating("")}
+                                    }>Mark as done
+                                    </button>
+                                </td>
+                                <td className="status"><span className={"orange"}>{response.ticket.status}</span></td>
                             </tr>
                     })}
                     </tbody>
@@ -248,75 +352,75 @@ function TicketsAdministratorView(props) {
             </Modal>
 
 {/*MODAL FOR CLOSING THE TICKET AND GIVING THE REVIEW*/}
-{/*            <Modal*/}
-{/*                isOpen={modalIsOpen}*/}
-{/*                ariaHideApp={false}*/}
-{/*                onAfterOpen={afterOpenModal}*/}
-{/*                onRequestClose={closeModal}*/}
-{/*                style={customStyles}*/}
-{/*                contentLabel="Example Modal"*/}
-{/*            >*/}
+            <Modal
+                isOpen={modalIsOpen}
+                ariaHideApp={false}
+                onAfterOpen={afterOpenModal}
+                onRequestClose={closeModal}
+                style={customStyles}
+                contentLabel="Example Modal"
+            >
 
-{/*                <h6 className={"margin-bottom-25"} ref={_subtitle => (subtitle = _subtitle)}><b>Write a review for : </b>{serviceProviderInModal.lastName + " " + serviceProviderInModal.firstName}</h6>*/}
+                <h6 className={"margin-bottom-25"} ref={_subtitle => (subtitle = _subtitle)}><b>Write a review for : </b>{serviceProviderInModal.lastName + " " + serviceProviderInModal.firstName}</h6>
 
-{/*                <div ref={_subtitle => (subtitle = _subtitle)}>*/}
+                <div ref={_subtitle => (subtitle = _subtitle)}>
 
 
-{/*                    <div className="container">*/}
-{/*                        <div className="row">*/}
-{/*                            <b style={{"marginTop" : "6px", "marginRight" : "2.5px"}}>Rating : </b>*/}
-{/*                            <ReactStars*/}
-{/*                                count={5}*/}
-{/*                                onChange={ratingChanged}*/}
-{/*                                size={24}*/}
-{/*                                activeColor="#ffd700"*/}
-{/*                            />*/}
-{/*                            <div style={{"marginTop" : "6px", "marginLeft" : "10px"}}>{rating}</div>*/}
-{/*                        </div>*/}
-{/*                    </div>*/}
+                    <div className="container">
+                        <div className="row">
+                            <b style={{"marginTop" : "6px", "marginRight" : "2.5px"}}>Rating : </b>
+                            <ReactStars
+                                count={5}
+                                onChange={ratingChanged}
+                                size={24}
+                                activeColor="#ffd700"
+                            />
+                            <div style={{"marginTop" : "6px", "marginLeft" : "10px"}}>{rating}</div>
+                        </div>
+                    </div>
 
-{/*                    <div className={"margin-top-25"}><b>Review title : </b></div>*/}
-{/*                    <input style={{"width" : "291px"}} type="text" placeholder={"Mandatory"} onChange={(e) => {*/}
-{/*                        const s = {...review};*/}
-{/*                        s.title = e.target.value;*/}
-{/*                        setReview(s);*/}
-{/*                    }}/>*/}
+                    <div className={"margin-top-25"}><b>Review title : </b></div>
+                    <input style={{"width" : "291px"}} type="text" placeholder={"Mandatory"} onChange={(e) => {
+                        const s = {...review};
+                        s.title = e.target.value;
+                        setReview(s);
+                    }}/>
 
-{/*                    <div  className={"margin-top-25"}><b>Review : </b></div>*/}
-{/*                    <textarea name="" id="" cols="30" rows="5" placeholder={"Describe your experience with the provider"} onChange={(e) => {*/}
-{/*                        const s = {...review};*/}
-{/*                        s.review = e.target.value;*/}
-{/*                        setReview(s);*/}
-{/*                    }}> </textarea>*/}
+                    <div  className={"margin-top-25"}><b>Review : </b></div>
+                    <textarea name="" id="" cols="30" rows="5" placeholder={"Describe your experience with the provider"} onChange={(e) => {
+                        const s = {...review};
+                        s.review = e.target.value;
+                        setReview(s);
+                    }}> </textarea>
 
-{/*                </div>*/}
+                </div>
 
-{/*                <div className="d-flex justify-content-center margin-top-25">*/}
-{/*                    <button className="btn btn-outline-primary margin-left-5" onClick={(e) => {*/}
-{/*                        e.preventDefault();*/}
-{/*                        axios.post(`/api/add-review/${serviceProviderInModal.id}`, review, {*/}
-{/*                            headers: {*/}
-{/*                                Authorization: 'Bearer ' + localStorage.getItem('token'),*/}
-{/*                            }*/}
-{/*                        })*/}
-{/*                            .then(() => {*/}
-{/*                                console.log("Review added")*/}
-{/*                            });*/}
+                {/*<div className="d-flex justify-content-center margin-top-25">*/}
+                {/*    <button className="btn btn-outline-primary margin-left-5" onClick={(e) => {*/}
+                {/*        e.preventDefault();*/}
+                {/*        axios.post(`/api/add-review/${serviceProviderInModal.id}`, review, {*/}
+                {/*            headers: {*/}
+                {/*                Authorization: 'Bearer ' + localStorage.getItem('token'),*/}
+                {/*            }*/}
+                {/*        })*/}
+                {/*            .then(() => {*/}
+                {/*                console.log("Review added")*/}
+                {/*            });*/}
 
-{/*                        axios.put(`/api/close-ticket/${ticketId}`, {*/}
-{/*                            headers: {*/}
-{/*                                Authorization: 'Bearer ' + localStorage.getItem('token'),*/}
-{/*                            }*/}
-{/*                        })*/}
-{/*                            .then(() => {*/}
-{/*                                closeModal();*/}
-{/*                                setRefresh(!refresh);*/}
-{/*                            });*/}
+                {/*        axios.put(`/api/close-ticket/${ticketId}`, {*/}
+                {/*            headers: {*/}
+                {/*                Authorization: 'Bearer ' + localStorage.getItem('token'),*/}
+                {/*            }*/}
+                {/*        })*/}
+                {/*            .then(() => {*/}
+                {/*                closeModal();*/}
+                {/*                setRefresh(!refresh);*/}
+                {/*            });*/}
 
-{/*                    }}>Submit review</button>*/}
-{/*                </div>*/}
+                {/*    }}>Submit review</button>*/}
+                {/*</div>*/}
 
-{/*            </Modal>*/}
+            </Modal>
 
         </div>
     );

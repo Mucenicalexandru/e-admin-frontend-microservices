@@ -33,6 +33,9 @@ function AddNewTicket(props) {
             })
     }, [value])
 
+    console.log(ticket)
+
+
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post(`/ticket/add`, ticket, {
