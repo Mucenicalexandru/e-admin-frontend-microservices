@@ -28,6 +28,8 @@ import SeePolls from "./poll/SeePolls";
 import AddPoll from "./poll/AddPoll";
 import Results from "./poll/Results";
 import TicketsAdministratorView from "./tickets/TicketsAdministratorView";
+import ListOfServiceProviders from "./service.providers/ListOfServiceProviders";
+import SeePendingTickets from "./tickets.provider.view/SeePendingTickets";
 
 function App() {
   return (
@@ -67,6 +69,9 @@ function App() {
                 <Route exact path={'/see-poll-result'} component={Results}/>
 
                 <Route exact path={'/see-offers'} component={TicketsAdministratorView}/>
+
+                <Route exact path={'/service-providers'} component={ListOfServiceProviders}/>
+                <Route exact path={'/see-tickets'} component={SeePendingTickets}/>
 
                 <Route exact path={'/see-location'} component={MapContainer}/>
 

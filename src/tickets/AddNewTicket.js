@@ -15,8 +15,23 @@ function AddNewTicket(props) {
         details : "",
         actionTaken : "",
         department : "",
-        type : ""
+        type : "",
+        street : "",
+        number : "",
+        town : ""
+
     });
+
+    useEffect(() => {
+        axios.get(`/building/${value.buildingId}`)
+            .then((response) => {
+                const s = {...ticket}
+                s.street = response.data.street;
+                s.number = response.data.number;
+                s.town = response.data.town;
+                setTicket(s);
+            })
+    }, [value])
 
     const handleSubmit = (e) => {
         e.preventDefault();

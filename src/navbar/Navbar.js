@@ -8,6 +8,8 @@ import AdministratorNavbar from "./AdministratorNavbar";
 import RegisterLink from "../registration/RegisterLink";
 import {UserContext} from "../context/UserContext";
 import PresidentNavbar from "./PresidentNavbar";
+import ProviderListNavbarComponent from "./ProviderListNavbarComponent";
+import ServiceProviderNavbar from "./ServiceProviderNavbar";
 
 const NavStyle = styled.div`
   background-color: #1f4253;
@@ -28,11 +30,11 @@ function Navbar(props) {
                     <UserNavbar/>
                     <PresidentNavbar/>
                     <AdministratorNavbar/>
-                    {/*<ServiceProviderNavbar/>*/}
+                    <ServiceProviderNavbar/>
                     <AdminNavbar/>
 
 {/*GENERAL NAVBAR*/}
-{/*                    <ProvidersListNavbarComponent/>*/}
+                    <ProviderListNavbarComponent/>
 {/*                    <Profile/>*/}
                     {value ? null : <RegisterLink/>}
                     <AuthenticationButton/>

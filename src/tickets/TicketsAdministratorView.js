@@ -82,7 +82,7 @@ function TicketsAdministratorView(props) {
                             return <tr className="openedTickets">
                                 <td className={"building"}><button className="btn btn-outline-dark btn-sm" onClick={(e) => {
                                     e.preventDefault();
-                                    axios.get(`/building/${ticket.buildingId}`, {
+                                    axios.get(`/building/building-and-president/${ticket.buildingId}`, {
                                         headers: {
                                             Authorization: 'Bearer ' + localStorage.getItem('token'),
                                         }
@@ -227,7 +227,7 @@ function TicketsAdministratorView(props) {
 
 
                 <h6 className={"margin-bottom-25"} ref={_subtitle => (subtitle = _subtitle)}>
-                    <b>{building.street + ", " + building.number} </b>
+                    <b>{building.building && building.building.street + ", " + building.building.number} </b>
                 </h6>
 
                 <div ref={_subtitle => (subtitle = _subtitle)}>

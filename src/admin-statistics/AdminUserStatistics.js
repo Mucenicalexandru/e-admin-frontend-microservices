@@ -3,6 +3,7 @@ import SeeUsers from "./SeeUsers";
 import SeeAdministrators from "./SeeAdministrators";
 import SeePresidents from "./SeePresidents";
 import SeeCensors from "./SeeCensors";
+import ListOfServiceProviders from "../service.providers/ListOfServiceProviders";
 
 function AdminUserStatistics(props) {
 
@@ -38,7 +39,7 @@ function AdminUserStatistics(props) {
             {userType === "administrators" && <SeeAdministrators/>}
             {userType === "presidents" && <SeePresidents/>}
             {userType === "censors" && <SeeCensors/>}
-            {/*{userType === "service providers" && <ListOfServiceProviders/>}*/}
+            {userType === "service providers" && <ListOfServiceProviders/>}
 
         </div>
     );
