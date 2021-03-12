@@ -11,7 +11,7 @@ function AdministratorNavbar(props) {
     const [activeOffers, setActiveOffers] = useState(0);
 
     useEffect(() => {
-        value &&
+        value && !value.roles.includes("ADMIN") && !value.roles.includes("SERVICE_PROVIDER") &&
         axios.get(`/group/get-by-id/${value.groupId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),
@@ -21,7 +21,6 @@ function AdministratorNavbar(props) {
                 setGroup(response.data);
             })
 
-        axios.get(``)
     }, [value])
 
 

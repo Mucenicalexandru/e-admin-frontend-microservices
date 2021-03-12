@@ -31,6 +31,8 @@ import TicketsAdministratorView from "./tickets/TicketsAdministratorView";
 import ListOfServiceProviders from "./service.providers/ListOfServiceProviders";
 import SeePendingTickets from "./tickets.provider.view/SeePendingTickets";
 import OfferDetails from "./offers/OfferDetails";
+import SeeAssignedServiceOfferDetails from "./tickets/SeeAssignedServiceOfferDetails";
+import ReviewDetails from "./service.providers/ReviewDetails";
 
 function App() {
   return (
@@ -75,6 +77,8 @@ function App() {
                 <Route exact path={'/see-tickets'} component={SeePendingTickets}/>
 
                 <Route exact path={'/pending-offers'} component={OfferDetails}/>
+                <Route exact path={'/assigned-service-provider'} component={SeeAssignedServiceOfferDetails}/>
+                <Route exact path={'/review-details'} component={ReviewDetails}/>
 
                 <Route exact path={'/see-location'} component={MapContainer}/>
 

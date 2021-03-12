@@ -7,6 +7,7 @@ import {UserContext} from "../context/UserContext";
 function AddNewTicket(props) {
 
     const value = useContext(UserContext);
+    const [isLoading, setIsLoading] = useState(true);
     const [redirect, setRedirect] = useState(false);
     const [ticket, setTicket] = useState({
         title : "",
@@ -30,10 +31,9 @@ function AddNewTicket(props) {
                 s.number = response.data.number;
                 s.town = response.data.town;
                 setTicket(s);
+                setIsLoading(false);
             })
-    }, [value])
-
-    console.log(ticket)
+    }, [isLoading])
 
 
     const handleSubmit = (e) => {

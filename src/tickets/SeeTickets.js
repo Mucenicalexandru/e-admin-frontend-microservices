@@ -15,7 +15,7 @@ function SeeTickets(props) {
     const [reset, setReset] = useState(true);
 
     useEffect(() => {
-        axios.get(`/ticket/${buildingId}`, {
+        axios.get(`/ticket/${value.buildingId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),
             }

@@ -19,7 +19,6 @@ function AddAdministrator(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(administrator);
         axios.post(`/user/add-administrator`, administrator, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')

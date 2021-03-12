@@ -104,7 +104,7 @@ function SeePendingTickets(props) {
                                 <td className="provider-ticket-opened-date">{response.ticket.dateOpened}</td>
                                 <td className="provider-ticket-status"><span className={"green"}>{response.ticket.status}</span></td>
                                 <td className={"ticket-type"}>{response.ticket.type}</td>
-                                <td className="provider-ticket-price-offer"><input style={{"width" : "150px"}} type="number" placeholder="Estimate price" onChange={(e) => {
+                                <td className="provider-ticket-price-offer"><input style={{"width" : "150px"}} type="number" placeholder="Estimate price" required onChange={(e) => {
                                     const s = {...offer};
                                     s.serviceProviderPrice = +e.target.value;
                                     s.ticketId = response.ticket.ticketId;

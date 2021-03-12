@@ -42,6 +42,7 @@ function TicketsAdministratorView(props) {
     const [group, setGroup] = useState({});
     const [building, setBuilding] = useState({});
     const [ticketId, setTicketId] = useState("");
+    const [refresh, setRefresh] = useState(false);
     const [serviceProviderInModal, setServiceProviderInModal] = useState({});
     const [rating, setRating] = useState("");
     const [buttonVisibility, setButtonVisibility] = useState(true);
@@ -58,15 +59,14 @@ function TicketsAdministratorView(props) {
                 setResponseList(response.data);
             })
 
-    }, [value, reset]);
+    }, [value, reset, refresh]);
 
     const [review, setReview] = useState({
         title : "",
         starNumber : 0,
         review : "",
-        user : {
-
-        }
+        providerId : "",
+        userId : ""
     })
 
     const ratingChanged = (newRating) => {
@@ -123,7 +123,7 @@ function TicketsAdministratorView(props) {
                     <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
                         <button type="button" className="btn btn-success margin-right-10" onClick={(e)=> {
                             e.preventDefault();
-                            axios.get(`/tickets/all-by-group-and-status-with-pending-offers/${value.groupId}/opened`, {
+                            axios.get(`/ticket/all-by-group-and-status-with-pending-offers/${value.groupId}/opened`, {
                                 headers: {
                                     Authorization: 'Bearer ' + localStorage.getItem('token'),
                                 }
@@ -134,7 +134,7 @@ function TicketsAdministratorView(props) {
                         }}>Opened tickets</button>
                         <button type="button" className="btn btn-warning margin-right-10" onClick={(e)=> {
                             e.preventDefault();
-                            axios.get(`/tickets/all-by-group-and-status-with-pending-offers/${value.groupId}/in progress`, {
+                            axios.get(`/ticket/all-by-group-and-status-with-pending-offers/${value.groupId}/in progress`, {
                                 headers: {
                                     Authorization: 'Bearer ' + localStorage.getItem('token'),
                                 }
@@ -145,7 +145,7 @@ function TicketsAdministratorView(props) {
                         }}>In Progress tickets</button>
                         <button type="button" className="btn btn-danger margin-right-10" onClick={(e)=> {
                             e.preventDefault();
-                            axios.get(`/tickets/all-by-group-and-status-with-pending-offers/${value.groupId}/closed`, {
+                            axios.get(`/ticket/all-by-group-and-status-with-pending-offers/${value.groupId}/closed`, {
                                 headers: {
                                     Authorization: 'Bearer ' + localStorage.getItem('token'),
                                 }
@@ -255,14 +255,12 @@ function TicketsAdministratorView(props) {
                                 <td className="offers"><i className={"green"}>Offer accepted</i></td>
                                 <td className={"ticket-accepted-date"}>{response.ticket.dateAccepted}</td>
                                 <td className={"assigned-service"}>
-                                    <Link to={{
-                                        pathname : '/assigned-service-provider',
-                                        providerId : response.pendingOffer.serviceProviderUserId,
-                                        groupId : value.groupId}}>{response.pendingOffer.serviceProviderUserId + " " + response.pendingOffer.serviceProviderUserId}
-                                    </Link>
+                                        <Link to={{
+                                            pathname : '/assigned-service-provider',
+                                            providerId : response.ticket.assignedServiceProviderUserId,
+                                            groupId : value.groupId}}>See assigned provider
+                                        </Link>
                                 </td>
-                                {/*TODO to fix here*/}
-                                <td className="offers"><i className={"red"}>TO FIX</i></td>
                                 <td className={"ticket-closed"}>{response.ticket.dateClosed}</td>
                                 <td className="status"><span className={"red"}>{response.ticket.status}</span></td>
                             </tr>
@@ -271,7 +269,7 @@ function TicketsAdministratorView(props) {
                                 <td className={"building"}>
                                     <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
                                         e.preventDefault();
-                                        axios.get(`/building/${response.ticket.buildingId}`, {
+                                        axios.get(`/building/building-and-president/${response.ticket.buildingId}`, {
                                             headers: {
                                                 Authorization: 'Bearer ' + localStorage.getItem('token'),
                                             }
@@ -292,12 +290,13 @@ function TicketsAdministratorView(props) {
                                     <Link to={{
                                         pathname : '/assigned-service-provider',
                                         providerId : response.ticket.assignedServiceProviderUserId,
-                                        groupId : value.groupId}}>{response.ticket.assignedServiceProviderUserId + " " + response.ticket.assignedServiceProviderUserId}
+                                        groupId : value.groupId}}>See assigned provider
                                     </Link>
                                 </td>
                                 <td className={"ticket-closed"}>
                                     <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
                                         e.preventDefault();
+                                        response.ticket && setTicketId(response.ticket.ticketId);
                                         axios.get(`/user/${response.ticket.assignedServiceProviderUserId}`, {
                                             headers: {
                                                 Authorization: 'Bearer ' + localStorage.getItem('token'),
@@ -305,7 +304,6 @@ function TicketsAdministratorView(props) {
                                         })
                                             .then(response => {
                                                 setServiceProviderInModal(response.data);
-                                                response.ticket && setTicketId(response.ticket.ticketId);
                                             })
                                         setIsOpen(true)
                                         setRating("")}
@@ -383,6 +381,8 @@ function TicketsAdministratorView(props) {
                     <input style={{"width" : "291px"}} type="text" placeholder={"Mandatory"} onChange={(e) => {
                         const s = {...review};
                         s.title = e.target.value;
+                        s.providerId = serviceProviderInModal.userId;
+                        s.userId = value.userId;
                         setReview(s);
                     }}/>
 
@@ -395,30 +395,31 @@ function TicketsAdministratorView(props) {
 
                 </div>
 
-                {/*<div className="d-flex justify-content-center margin-top-25">*/}
-                {/*    <button className="btn btn-outline-primary margin-left-5" onClick={(e) => {*/}
-                {/*        e.preventDefault();*/}
-                {/*        axios.post(`/api/add-review/${serviceProviderInModal.id}`, review, {*/}
-                {/*            headers: {*/}
-                {/*                Authorization: 'Bearer ' + localStorage.getItem('token'),*/}
-                {/*            }*/}
-                {/*        })*/}
-                {/*            .then(() => {*/}
-                {/*                console.log("Review added")*/}
-                {/*            });*/}
+                <div className="d-flex justify-content-center margin-top-25">
+                    <button className="btn btn-outline-primary margin-left-5" onClick={(e) => {
+                        e.preventDefault();
+                        axios.post(`/review/add`, review, {
+                            headers: {
+                                Authorization: 'Bearer ' + localStorage.getItem('token'),
+                            }
+                        })
+                            .then(() => {
+                                console.log("Review added")
+                            });
 
-                {/*        axios.put(`/api/close-ticket/${ticketId}`, {*/}
-                {/*            headers: {*/}
-                {/*                Authorization: 'Bearer ' + localStorage.getItem('token'),*/}
-                {/*            }*/}
-                {/*        })*/}
-                {/*            .then(() => {*/}
-                {/*                closeModal();*/}
-                {/*                setRefresh(!refresh);*/}
-                {/*            });*/}
 
-                {/*    }}>Submit review</button>*/}
-                {/*</div>*/}
+                        axios.put(`/ticket/close/${ticketId}`, null, {
+                            headers: {
+                                Authorization: 'Bearer ' + localStorage.getItem('token'),
+                            }
+                        })
+                            .then(() => {
+                                closeModal();
+                                setRefresh(!refresh);
+                            });
+
+                    }}>Submit review</button>
+                </div>
 
             </Modal>
 
