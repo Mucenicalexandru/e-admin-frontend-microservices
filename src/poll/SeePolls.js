@@ -17,7 +17,11 @@ function SeePolls(props) {
     })
 
     useEffect(() => {
-        axios.get(`/poll/all-by-building-with-total-votes/${value.buildingId}`)
+        axios.get(`/poll/all-by-building-with-total-votes/${value.buildingId}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
+            }
+        })
             .then((response) => {
                 setResponseList(response.data);
             })
@@ -133,6 +137,7 @@ function SeePolls(props) {
                                 <Link to={{
                                     pathname : '/see-poll-result',
                                     pollId : response.poll.pollId,
+                                    pollDescription : response.poll.description,
                                     buildingId : value.buildingId}}>
                                     <button className="btn btn-outline-dark btn-sm">See result</button>
                                 </Link>

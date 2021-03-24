@@ -5,16 +5,25 @@ import {Link} from "react-router-dom";
 
 function Results(props) {
 
+    let pollDescription = props.location.pollDescription;
     let pollId = props.location.pollId;
     let buildingId = props.location.buildingId;
     const [poll, setPoll] = useState({});
     const [answers, setAnswers] = useState({});
 
+    useEffect(() => {
+        axios.get(`/vote/get-results/${pollId}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
+            }
+        })
+    })
+
     return (
         <>
             <div>
                 <h1 className="d-flex justify-content-center">
-                    <div>{poll.description}</div>
+                    <div>{pollDescription}</div>
                 </h1>
                 <CanvasJSChart options = {{
 
