@@ -9,7 +9,7 @@ function AddPoll(props) {
 
     const value = useContext(UserContext);
     const [redirect, setRedirect] = useState(false);
-    const [startDate] = useState(new Date());
+    const [startDate, setStartDate] = useState(new Date());
     const [poll, setPoll] = useState({
         description : "",
         option1 : "",
@@ -89,12 +89,13 @@ function AddPoll(props) {
                         setPoll(s);
                     }}/>
                 </div>
-
+{/*END DATE*/}
                 <div className={"poll-input"}>
                     <div>Select poll end date</div>
                     <DatePicker selected={startDate} onChange={date => {
                         const s = {...poll};
                         s.endDate = date;
+                        setStartDate(date);
                         setPoll(s);
                     }} />
 

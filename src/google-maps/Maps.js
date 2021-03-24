@@ -19,13 +19,12 @@ export class MapContainer extends Component {
 
     componentDidMount() {
         console.log(this.props.location.address)
-
-        // geocodeByAddress(this.props.location.address)
-        //     .then(results => getLatLng(results[0]))
-        //     .then(latLng => {
-        //         this.setState({ mapCenter: latLng });
-        //     })
-        //     .catch(error => console.error('Error', error));
+        geocodeByAddress(this.props.location.address)
+            .then(results => getLatLng(results[0]))
+            .then(latLng => {
+                this.setState({ mapCenter: latLng });
+            })
+            .catch(error => console.error('Error', error));
     }
 
     render() {
@@ -35,13 +34,13 @@ export class MapContainer extends Component {
                     <h1 style={{"marginLeft" : "100px","fontFamily" : "'Source Serif Pro', serif", "fontSize" : "30px", "marginTop" : "25px"}}>{this.props.location.address}</h1>
                     <Map google={this.props.google}
                          initialCenter={{
-                        lat: this.state.mapCenter.lat,
-                        lng: this.state.mapCenter.lng
-                        }}
-                        center={{
-                            lat: this.state.mapCenter.lat,
-                            lng: this.state.mapCenter.lng
-                        }}
+                             lat: this.state.mapCenter.lat,
+                             lng: this.state.mapCenter.lng
+                         }}
+                         center={{
+                             lat: this.state.mapCenter.lat,
+                             lng: this.state.mapCenter.lng
+                         }}
                          style={{"marginLeft" : "100px", "width" : "600px", "height" : "400px"}}
                     >
                         <Marker position={{lat: this.state.mapCenter.lat, lng: this.state.mapCenter.lng}} />

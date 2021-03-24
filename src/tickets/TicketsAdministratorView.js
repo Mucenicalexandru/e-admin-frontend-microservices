@@ -47,16 +47,34 @@ function TicketsAdministratorView(props) {
     const [rating, setRating] = useState("");
     const [buttonVisibility, setButtonVisibility] = useState(true);
     const [reset, setReset] = useState(true);
+    const [administrator, setAdministrator] = useState({});
 
     useEffect(() => {
-        axios.get(`/group/get-by-id/${value.groupId}`)
+        axios.get(`/group/get-by-id/${value.groupId}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+            })
             .then((response) => {
                 setGroup(response.data);
             })
 
-        axios.get(`/ticket/all-by-group-with-pending-offers/${value.groupId}`)
+        axios.get(`/ticket/all-by-group-with-pending-offers/${value.groupId}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+            })
             .then((response) => {
                 setResponseList(response.data);
+            })
+
+        axios.get(`/user/${value.userId}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+            })
+            .then((response) => {
+                setAdministrator(response.data);
             })
 
     }, [value, reset, refresh]);
@@ -66,7 +84,8 @@ function TicketsAdministratorView(props) {
         starNumber : 0,
         review : "",
         providerId : "",
-        userId : ""
+        givingUserFirstName : "",
+        givingUserLastName : ""
     })
 
     const ratingChanged = (newRating) => {
@@ -382,7 +401,8 @@ function TicketsAdministratorView(props) {
                         const s = {...review};
                         s.title = e.target.value;
                         s.providerId = serviceProviderInModal.userId;
-                        s.userId = value.userId;
+                        s.givingUserFirstName = administrator.firstName;
+                        s.givingUserLastName = administrator.lastName;
                         setReview(s);
                     }}/>
 

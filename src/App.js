@@ -20,7 +20,7 @@ import AddCensor from "./addMembers/AddCensor";
 import EditPresident from "./addMembers/EditPresident";
 import EditCensor from "./addMembers/EditCensor";
 import AdminUserStatistics from "./admin-statistics/AdminUserStatistics";
-import {MapContainer} from "./google-maps/Maps";
+import Maps from "./google-maps/Maps";
 import PendingRequestsList from "./user-access/PendingRequestsList";
 import SeeTickets from "./tickets/SeeTickets";
 import AddNewTicket from "./tickets/AddNewTicket";
@@ -33,6 +33,7 @@ import SeePendingTickets from "./tickets.provider.view/SeePendingTickets";
 import OfferDetails from "./offers/OfferDetails";
 import SeeAssignedServiceOfferDetails from "./tickets/SeeAssignedServiceOfferDetails";
 import ReviewDetails from "./service.providers/ReviewDetails";
+import MyBuilding from "./user-view/MyBuilding";
 
 function App() {
   return (
@@ -80,7 +81,11 @@ function App() {
                 <Route exact path={'/assigned-service-provider'} component={SeeAssignedServiceOfferDetails}/>
                 <Route exact path={'/review-details'} component={ReviewDetails}/>
 
-                <Route exact path={'/see-location'} component={MapContainer}/>
+                <Route exact path={'/see-location'} component={Maps}/>
+
+                <Route exact path={'/my-building'} component={MyBuilding}/>
+
+
 
 
           </Router>
