@@ -26,7 +26,10 @@ function UserNavbar(props) {
 
 {/*USER TICKETS*/}
             {value && value.roles.length === 1 && value.roles.includes("USER") ?
-                <Link className="nav-link" to={"/user-personal-tickets"} style={{"color": "white"}}>
+                <Link className="nav-link" to={{
+                    pathname : "/see-offers",
+                    type : "Personal"
+                }} style={{"color": "white"}}>
                     <i className="fas fa-ticket-alt"> </i> My tickets</Link>
                 :
                 null}

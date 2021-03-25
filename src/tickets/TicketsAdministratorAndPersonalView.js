@@ -1,14 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
 import axios from "axios";
-import {Link} from "react-router-dom";
 import Modal from "react-modal";
 import ReactStars from "react-rating-stars-component";
 import {UserContext} from "../context/UserContext";
+import {Link, Redirect} from "react-router-dom";
 
-function TicketsAdministratorView(props) {
+function TicketsAdministratorAndPersonalView(props) {
 
     const value = useContext(UserContext);
-
+    let type = props.location.type;
     const customStyles = {
         content : {
             backgroundColor       : "#e2eafc",
@@ -25,7 +25,8 @@ function TicketsAdministratorView(props) {
     let subtitle;
     const [modalIsOpen,setIsOpen] = useState(false);
     const [secondModalIsOpen, setSecondModalIsOpen] = useState(false);
-
+    const [userRedirect, setUserRedirect] = useState(false);
+    const [presidentRedirect, setPresidentRedirect] = useState(false);
     function afterOpenModal() {
         subtitle.style.color = '#000000';
     }
@@ -60,7 +61,7 @@ function TicketsAdministratorView(props) {
                 setGroup(response.data);
             })
 
-        axios.get(`/ticket/all-by-group-with-pending-offers/${value.groupId}/${status}`, {
+        axios.get(`/ticket/all-by-group-with-pending-offers/${value.groupId}/${status}/${type}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
@@ -78,7 +79,7 @@ function TicketsAdministratorView(props) {
                 setAdministrator(response.data);
             })
 
-    }, [value, reset, refresh, status]);
+    }, [value, reset, refresh, status, type]);
 
     const [review, setReview] = useState({
         title : "",
@@ -127,7 +128,27 @@ function TicketsAdministratorView(props) {
     return (
         <div>
 
-            <h1 className="d-flex justify-content-center">{group.officialName}</h1>
+            {presidentRedirect && <Redirect to={{
+                pathname : "/add-ticket",
+                buildingId : value.buildingId,
+                type : "Administrative"
+            }} />}
+
+            {userRedirect && <Redirect to={{
+                pathname : "/add-ticket",
+                buildingId : value.buildingId,
+                type : "Personal"
+            }} />}
+
+
+
+
+            {type === "Administrative" ?
+                <h1 className="d-flex justify-content-center">{group.officialName}</h1>
+            :
+                <h1 className="d-flex justify-content-center">My Tickets</h1>
+            }
+
             <img className="card mx-auto shadow" src={`/images/${group.picture}`} alt={group.officialName} style={{"width" : "250px", "height" : "175px", "marginBottom" : "25px", "borderRadius": "10px"}}/>
 
             <div className={"margin-top-25"}>
@@ -137,7 +158,20 @@ function TicketsAdministratorView(props) {
                         e.preventDefault();
                         setButtonVisibility(!buttonVisibility);
                     }}>Advanced Search</button>
+                    {value.roles.includes("PRESIDENT") &&
+                    <button type="button" className="btn btn-outline-info margin-left-10" onClick={(e) => {
+                        e.preventDefault();
+                        setPresidentRedirect(true);
+                    }}>Add Building Ticket</button>}
+                    {value.roles.includes("USER") && type === "Personal" &&
+                    <button type="button" className="btn btn-outline-info margin-left-10" onClick={(e) => {
+                        e.preventDefault();
+                        setUserRedirect(true);
+                    }}>Add Personal Ticket</button>}
                 </div>
+
+
+
 
                 <div hidden={buttonVisibility}>
                     <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
@@ -170,7 +204,11 @@ function TicketsAdministratorView(props) {
                 <table>
                     <thead>
                     <tr>
-                        <th>Building</th>
+                        {type === "Administrative" && value.roles.includes("ADMINISTRATOR") ?
+                            <th>Building</th>
+                        :
+                            <th>#</th>
+                        }
                         <th>Ticket title</th>
                         <th>Department</th>
                         <th>Date opened</th>
@@ -185,18 +223,23 @@ function TicketsAdministratorView(props) {
                     {responseList.map((response, index) => {
                         if(response.ticket.status === "opened"){
                             return <tr className="openedTickets">
-                                <td className={"building"}><button className="btn btn-outline-dark btn-sm" onClick={(e) => {
-                                    e.preventDefault();
-                                    axios.get(`/building/building-and-president/${response.ticket.buildingId}`, {
-                                        headers: {
-                                            Authorization: 'Bearer ' + localStorage.getItem('token'),
-                                        }
-                                    })
-                                        .then(response => {
-                                            setBuilding(response.data);
+                                {type === "Administrative" && value.roles.includes("ADMINISTRATOR") ?
+                                    <td className={"building"}><button className="btn btn-outline-dark btn-sm" onClick={(e) => {
+                                        e.preventDefault();
+                                        axios.get(`/building/building-and-president/${response.ticket.buildingId}`, {
+                                            headers: {
+                                                Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                            }
                                         })
-                                    setSecondModalIsOpen(true);
-                                }}>See address</button></td>
+                                            .then(response => {
+                                                setBuilding(response.data);
+                                            })
+                                        setSecondModalIsOpen(true);
+                                    }}>See address</button></td>
+                                    :
+                                    <td>{index+1}</td>
+                                }
+
                                 <td className={"ticket-title"}>{response.ticket.title}</td>
                                 <td className={"ticket-department"}>{response.ticket.department}</td>
                                 <td className={"ticket-opened-date"}>{response.ticket.dateOpened}</td>
@@ -210,7 +253,8 @@ function TicketsAdministratorView(props) {
                                                 pathname : '/pending-offers',
                                                 ticketId : response.ticket.ticketId,
                                                 groupId : value.groupId,
-                                                buildingId : building.id}}>
+                                                buildingId : building.id,
+                                                type : type}}>
                                                 <button className="btn btn-outline-success btn-sm">{response.pendingOffer.length} Offer</button>
                                             </Link>
                                         </td>
@@ -218,7 +262,8 @@ function TicketsAdministratorView(props) {
                                         <td className="offers">
                                             <Link to={{
                                                 pathname : '/pending-offers',
-                                                ticketId : response.ticket.ticketId
+                                                ticketId : response.ticket.ticketId,
+                                                type : type
                                                 }}>
                                                 <button className="btn btn-outline-success btn-sm">{response.pendingOffer.length} Offers</button>
                                             </Link>
@@ -258,7 +303,8 @@ function TicketsAdministratorView(props) {
                                         <Link to={{
                                             pathname : '/assigned-service-provider',
                                             providerId : response.ticket.assignedServiceProviderUserId,
-                                            groupId : value.groupId}}>See assigned provider
+                                            groupId : value.groupId,
+                                            type : type}}>See assigned provider
                                         </Link>
                                 </td>
                                 <td className={"ticket-closed"}>{response.ticket.dateClosed}</td>
@@ -428,4 +474,4 @@ function TicketsAdministratorView(props) {
     );
 }
 
-export default TicketsAdministratorView;
+export default TicketsAdministratorAndPersonalView;

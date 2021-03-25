@@ -28,8 +28,9 @@ function MyBuilding(props) {
                 <div className={"margin-top-25 margin-bottom-25"}>
                     <p className="card-text">Tickets : {response.ticketList && response.ticketList.length}
                         <Link to={{
-                            pathname : '/tickets',
-                            buildingId : value.buildingId
+                            pathname : '/see-offers',
+                            buildingId : value.buildingId,
+                            type : "Administrative"
                         }}>
                             <button className="btn btn-outline-dark btn-sm float-right">See tickets</button>
                         </Link>

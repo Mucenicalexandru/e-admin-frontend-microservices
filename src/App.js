@@ -22,12 +22,11 @@ import EditCensor from "./addMembers/EditCensor";
 import AdminUserStatistics from "./admin-statistics/AdminUserStatistics";
 import Maps from "./google-maps/Maps";
 import PendingRequestsList from "./user-access/PendingRequestsList";
-import SeeTickets from "./tickets/SeeTickets";
 import AddNewTicket from "./tickets/AddNewTicket";
 import SeePolls from "./poll/SeePolls";
 import AddPoll from "./poll/AddPoll";
 import Results from "./poll/Results";
-import TicketsAdministratorView from "./tickets/TicketsAdministratorView";
+import TicketsAdministratorAndPersonalView from "./tickets/TicketsAdministratorAndPersonalView";
 import ListOfServiceProviders from "./service.providers/ListOfServiceProviders";
 import SeePendingTickets from "./tickets.provider.view/SeePendingTickets";
 import OfferDetails from "./offers/OfferDetails";
@@ -36,7 +35,6 @@ import ReviewDetails from "./service.providers/ReviewDetails";
 import MyBuilding from "./user-view/MyBuilding";
 import Polls from "./user-view/Polls";
 import Vote from "./user-view/Vote";
-import SeePersonalTickets from "./user-view/SeePersonalTickets";
 
 
 function App() {
@@ -69,14 +67,13 @@ function App() {
 
                 <Route exact path={'/pending-requests'} component={PendingRequestsList}/>
 
-                <Route exact path={'/tickets'} component={SeeTickets}/>
                 <Route exact path={'/add-ticket'} component={AddNewTicket}/>
 
                 <Route exact path={'/add-poll'} component={AddPoll}/>
                 <Route exact path={'/see-polls'} component={SeePolls}/>
                 <Route exact path={'/see-poll-result'} component={Results}/>
 
-                <Route exact path={'/see-offers'} component={TicketsAdministratorView}/>
+                <Route exact path={'/see-offers'} component={TicketsAdministratorAndPersonalView}/>
 
                 <Route exact path={'/service-providers'} component={ListOfServiceProviders}/>
                 <Route exact path={'/see-tickets'} component={SeePendingTickets}/>
@@ -90,10 +87,6 @@ function App() {
                 <Route exact path={'/my-building'} component={MyBuilding}/>
                 <Route exact path={'/polls'} component={Polls}/>
                 <Route exact path={'/vote'} component={Vote}/>
-                <Route exact path={'/user-personal-tickets'} component={SeePersonalTickets}/>
-
-
-
 
 
           </Router>

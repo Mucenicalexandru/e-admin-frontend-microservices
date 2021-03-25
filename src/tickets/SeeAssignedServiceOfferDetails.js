@@ -7,6 +7,7 @@ import {AverageStarRating} from "../util/AverageStarRating";
 function SeeAssignedServiceOfferDetails(props) {
 
     let providerId = props.location.providerId;
+    let type = props.location.type;
     let groupId = props.location.groupId;
     const value = useContext(UserContext);
     const [serviceProvider, setServiceProvider] = useState({});
@@ -59,7 +60,8 @@ function SeeAssignedServiceOfferDetails(props) {
                 {value.roles.includes("ADMINISTRATOR") &&
                 <Link to={{
                     pathname: "/see-offers",
-                    groupId: groupId
+                    groupId: groupId,
+                    type : type
                 }}>
                     <button className="btn btn-outline-dark margin-right-5">Back</button>
                 </Link>
@@ -67,8 +69,9 @@ function SeeAssignedServiceOfferDetails(props) {
 
                 {value.roles.includes("PRESIDENT") &&
                 <Link to={{
-                    pathname: "/tickets",
-                    buildingId: value.buildingId
+                    pathname: "/see-offers",
+                    buildingId: value.buildingId,
+                    type : type
                 }}>
                     <button className="btn btn-outline-dark margin-right-5">Back</button>
                 </Link>

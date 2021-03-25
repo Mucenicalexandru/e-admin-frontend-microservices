@@ -6,6 +6,7 @@ import {UserContext} from "../context/UserContext";
 function OfferDetails(props) {
 
     let ticketId = props.location.ticketId;
+    let type = props.location.type;
     const value = useContext(UserContext);
     const [response, setResponse] = useState({});
     const [administratorRedirect, setAdministratorRedirect] = useState(false);
@@ -27,11 +28,13 @@ function OfferDetails(props) {
         <div>
             {administratorRedirect && <Redirect to={{
                 pathname : "/see-offers",
-                groupId : value.groupId
+                groupId : value.groupId,
+                type : type
             }} />}
 
             {userRedirect && <Redirect to={{
-                pathname : "/user-personal-tickets"
+                pathname : "/see-offers",
+                type : type
             }} />}
 
             {response.pendingOffer && response.pendingOffer.length > 0
@@ -73,6 +76,8 @@ function OfferDetails(props) {
 
                         <p><i className="fas fa-calendar-alt"> </i> Received on : {offer.serviceProviderDate}</p>
 
+                        {value.roles.includes("ADMINISTRATOR") &&
+                            <div>
                         <button type="submit" className="btn btn-outline-success float-right margin-top-25" onClick={(e) => {
                             e.preventDefault();
                             axios.put(`/ticket/accept-offer/${ticketId}`, offer, {
@@ -115,19 +120,69 @@ function OfferDetails(props) {
                                 })
                         }}>Reject
                         </button>
+                            </div>}
+
+                        {value.roles.includes("USER") && type === "Personal" &&
+                        <div>
+                            <button type="submit" className="btn btn-outline-success float-right margin-top-25" onClick={(e) => {
+                                e.preventDefault();
+                                axios.put(`/ticket/accept-offer/${ticketId}`, offer, {
+                                    headers: {
+                                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                    }
+                                })
+                                    .then(() => {
+                                        console.log("Added")
+                                    })
+                                axios.delete(`/pending-offer/all/${response.ticket.ticketId}`, {
+                                    headers: {
+                                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                    }
+                                })
+                                    .then(() => {
+                                        if(value.roles.includes("ADMINISTRATOR")){
+                                            setAdministratorRedirect(true);
+                                        }else{
+                                            setUserRedirect(true);
+                                        }
+                                    })
+                            }}>Accept
+                            </button>
+
+
+                            <button className="btn btn-outline-danger margin-top-25" onClick={(e) => {
+                                e.preventDefault();
+                                axios.delete(`/api/reject-pending_service_offer/${offer.id}`, {
+                                    headers: {
+                                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                    }
+                                })
+                                    .then(() => {
+                                        if(value.roles.includes("ADMINISTRATOR")){
+                                            setAdministratorRedirect(true);
+                                        }else{
+                                            setUserRedirect(true);
+                                        }
+                                    })
+                            }}>Reject
+                            </button>
+                        </div>}
                     </div>
 
                 </div>
 
             })}
-            {/*<div className="d-flex justify-content-center margin-top-25">*/}
-            {/*    <Link to={{*/}
-            {/*        pathname : "/see-offers",*/}
-            {/*        groupId : groupId*/}
-            {/*    }}>*/}
-            {/*        <button className="btn btn-outline-dark margin-right-5 margin-bottom-25">Back</button>*/}
-            {/*    </Link>*/}
-            {/*</div>*/}
+
+                    <div className="d-flex justify-content-center margin-top-25">
+                        <Link to={{
+                            pathname : "/see-offers",
+                            type : type
+                        }}>
+                            <button className="btn btn-outline-dark margin-right-5 margin-bottom-25">Back</button>
+                        </Link>
+                    </div>
+
+
 
         </div>
     );

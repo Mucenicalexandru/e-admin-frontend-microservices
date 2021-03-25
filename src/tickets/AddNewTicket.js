@@ -7,6 +7,7 @@ import {UserContext} from "../context/UserContext";
 function AddNewTicket(props) {
 
     const value = useContext(UserContext);
+    let type = props.location.type;
     const [isLoading, setIsLoading] = useState(true);
     const [redirect, setRedirect] = useState(false);
     const [ticket, setTicket] = useState({
@@ -61,14 +62,17 @@ function AddNewTicket(props) {
 
                 {value.roles.includes("PRESIDENT") &&  redirect &&
                     <Redirect to={{
-                        pathname : "/tickets",
-                        buildingId : value.buildingId
+                        pathname : "/see-offers",
+                        buildingId : value.buildingId,
+                        type : type
                     }} />
                 }
+
                 {value.roles.includes("USER") &&  redirect &&
                 <Redirect to={{
-                    pathname : "/user-personal-tickets",
-                    buildingId : value.buildingId
+                    pathname : "/see-offers",
+                    buildingId : value.buildingId,
+                    type : type
                 }} />
                 }
 
@@ -77,7 +81,7 @@ function AddNewTicket(props) {
                     {value.roles.includes("USER") ?
                         <h1>Add Personal Ticket</h1>
                         :
-                        <h1>Add Ticket</h1>
+                        <h1>Add Building Ticket</h1>
                     }
 
 {/*DEPARTMENT*/}
@@ -129,8 +133,9 @@ function AddNewTicket(props) {
                               }}/>
                     </div>
                     <Link to={{
-                        pathname : "/tickets",
-                        buildingId : value.buildingId
+                        pathname : "/see-offers",
+                        buildingId : value.buildingId,
+                        type : type
                     }}>
                         <button type="submit" className="btn btn-outline-secondary margin-top-25 float-left">Back</button>
                     </Link>

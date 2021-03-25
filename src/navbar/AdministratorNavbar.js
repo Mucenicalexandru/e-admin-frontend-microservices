@@ -30,6 +30,7 @@ function AdministratorNavbar(props) {
             {value && value.roles.includes("ADMINISTRATOR") &&
             <Link to={{
                 pathname : "/see-offers",
+                type : "Administrative",
                 groupId : group.groupId}} style={{"color" : "white"}} className="nav-link" >Service Offers<span style={{"backgroundColor" : "white", "color" : "red", "padding" : "1.5px", "borderRadius" : "5px"}}>3</span></Link>}
 
 {/*ADMINISTRATOR JOIN REQUESTS*/}
