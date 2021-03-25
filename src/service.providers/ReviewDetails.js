@@ -8,13 +8,11 @@ import {AverageStarRating} from "../util/AverageStarRating";
 function ReviewDetails(props) {
 
     let providerId = props.location.providerId;
-    let averageStarRating = props.location.averageStarRating;
     let rating = props.location.rating;
     const [serviceProvider, setServiceProvider] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [serviceProviderReviewList, setServiceProviderReviewList] = useState([]);
-    const [totalStars, setTotalStars] = useState([]);
-    const [resultsWithPercentage, setResultsWithPercentage] = useState({});
+
 
 
     useEffect(() => {
@@ -24,6 +22,7 @@ function ReviewDetails(props) {
             }
         })
             .then(response => {
+                console.log(response.data.starStatistics)
                 setServiceProvider(response.data);
                 setIsLoading(true);
             })
@@ -53,25 +52,26 @@ function ReviewDetails(props) {
                 </div>
 
 
-                {/*//TODO progress bar by percentage*/}
+
                 <div className={"margin-top-25"}>
                     <div className={"margin-bottom-25"}>
-                        <span className={"blue-underline"}>5 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[5]})</span><ProgressBar variant="success" now={55} />
-                    </div>
-                    <div className={"margin-bottom-25"}>
-                        <span className={"blue-underline"} >4 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[4]})</span><ProgressBar variant="warning" now={20}/>
+                        <span className={"blue-underline"}>5 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[5]})</span><ProgressBar variant="success" now={serviceProvider.starStatistics[5] * 100 / serviceProvider.totalReviews} />
                     </div>
 
                     <div className={"margin-bottom-25"}>
-                        <span className={"blue-underline"} >3 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[3]})</span><ProgressBar variant="danger" now={20} />
+                        <span className={"blue-underline"} >4 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[4]})</span><ProgressBar variant="warning" now={serviceProvider.starStatistics[4] * 100 / serviceProvider.totalReviews}/>
                     </div>
 
                     <div className={"margin-bottom-25"}>
-                        <span className={"blue-underline"} >2 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[2]})</span><ProgressBar variant="danger" now={5} />
+                        <span className={"blue-underline"} >3 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[3]})</span><ProgressBar variant="danger" now={serviceProvider.starStatistics[3] * 100 / serviceProvider.totalReviews} />
                     </div>
 
                     <div className={"margin-bottom-25"}>
-                        <span className={"blue-underline"} >1 star ({serviceProvider.starStatistics && serviceProvider.starStatistics[1]})</span><ProgressBar variant="info" now={5} />
+                        <span className={"blue-underline"} >2 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[2]})</span><ProgressBar variant="danger" now={serviceProvider.starStatistics[2] * 100 / serviceProvider.totalReviews} />
+                    </div>
+
+                    <div className={"margin-bottom-25"}>
+                        <span className={"blue-underline"} >1 star ({serviceProvider.starStatistics && serviceProvider.starStatistics[1]})</span><ProgressBar variant="info" now={serviceProvider.starStatistics[1] * 100 / serviceProvider.totalReviews} />
                     </div>
                 </div>
 
