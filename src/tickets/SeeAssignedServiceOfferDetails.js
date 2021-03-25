@@ -32,7 +32,7 @@ function SeeAssignedServiceOfferDetails(props) {
                     {serviceProvider.totalReviews > 0 ?
                         <div className="rating">
                             {serviceProvider.totalReviews && AverageStarRating(serviceProvider.averageStars) }
-                            <span className={"margin-left-5"}>{serviceProvider.averageStars }</span> <p>
+                            <span className={"margin-left-5"}>{serviceProvider.averageStars.toString().substring(0, 4) }</span> <p>
                             <Link to={{
                                 pathname : '/review-details',
                                 providerId : providerId,

@@ -3,6 +3,7 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import {StarRating} from "../util/StarRating";
+import {AverageStarRating} from "../util/AverageStarRating";
 
 function ReviewDetails(props) {
 
@@ -47,11 +48,12 @@ function ReviewDetails(props) {
 
                 <div className="container">
                     <div style={{"fontSize" : "50px", "lineHeight" : "58px", "marginBottom" : "15px"}}>
-                        {rating.toString().substring(0, 4)} {StarRating(rating)}
+                        {rating.toString().substring(0, 4)} {AverageStarRating(rating)}
                     </div>
                 </div>
 
 
+                {/*//TODO progress bar by percentage*/}
                 <div className={"margin-top-25"}>
                     <div className={"margin-bottom-25"}>
                         <span className={"blue-underline"}>5 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[5]})</span><ProgressBar variant="success" now={55} />

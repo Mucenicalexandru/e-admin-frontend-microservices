@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {UserContext} from "../context/UserContext";
 
 function Polls(props) {
+
     const value = useContext(UserContext);
     let buildingId = props.location.buildingId;
     const [responseList, setResponseList] = useState([]);
@@ -68,9 +69,10 @@ function Polls(props) {
                                     :
                                     <td>
                                         <Link to={{
-                                            pathname : '/poll',
+                                            pathname : '/see-poll-result',
                                             buildingId : buildingId,
-                                            pollId : response.poll.pollId}}>
+                                            pollId : response.poll.pollId,
+                                            pollDescription : response.poll.description}}>
                                             <button className="btn btn-outline-dark btn-sm">Results</button>
                                         </Link>
                                     </td>
