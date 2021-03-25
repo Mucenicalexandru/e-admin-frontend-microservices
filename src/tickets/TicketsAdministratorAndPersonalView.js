@@ -279,21 +279,25 @@ function TicketsAdministratorAndPersonalView(props) {
                             </tr>
                         }else if(response.ticket.status === "closed"){
                             return <tr className="closedTickets">
-                                <td className={"building"}>
-                                    <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
-                                        e.preventDefault();
-                                        axios.get(`/building/building-and-president/${response.ticket.buildingId}`, {
-                                            headers: {
-                                                Authorization: 'Bearer ' + localStorage.getItem('token'),
-                                            }
-                                        })
-                                            .then(response => {
-                                                setBuilding(response.data);
+                                {type === "Administrative" && value.roles.includes("ADMINISTRATOR") ?
+                                    <td className={"building"}>
+                                        <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
+                                            e.preventDefault();
+                                            axios.get(`/building/building-and-president/${response.ticket.buildingId}`, {
+                                                headers: {
+                                                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                                }
                                             })
-                                        setSecondModalIsOpen(true);
-                                    }}>See address
-                                    </button>
-                                </td>
+                                                .then(response => {
+                                                    setBuilding(response.data);
+                                                })
+                                            setSecondModalIsOpen(true);
+                                        }}>See address
+                                        </button>
+                                    </td>
+                                    :
+                                    <td>{index+1}</td>
+                                }
                                 <td className={"ticket-title"}>{response.ticket.title}</td>
                                 <td className={"ticket-department"}>{response.ticket.department}</td>
                                 <td className={"ticket-opened-date"}>{response.ticket.dateOpened}</td>
@@ -312,21 +316,25 @@ function TicketsAdministratorAndPersonalView(props) {
                             </tr>
                         }else
                             return <tr className="progressTickets">
-                                <td className={"building"}>
-                                    <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
-                                        e.preventDefault();
-                                        axios.get(`/building/building-and-president/${response.ticket.buildingId}`, {
-                                            headers: {
-                                                Authorization: 'Bearer ' + localStorage.getItem('token'),
-                                            }
-                                        })
-                                            .then(response => {
-                                                setBuilding(response.data);
+                                {type === "Administrative" && value.roles.includes("ADMINISTRATOR") ?
+                                    <td className={"building"}>
+                                        <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
+                                            e.preventDefault();
+                                            axios.get(`/building/building-and-president/${response.ticket.buildingId}`, {
+                                                headers: {
+                                                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                                }
                                             })
-                                        setSecondModalIsOpen(true);
-                                    }}>See address
-                                    </button>
-                                </td>
+                                                .then(response => {
+                                                    setBuilding(response.data);
+                                                })
+                                            setSecondModalIsOpen(true);
+                                        }}>See address
+                                        </button>
+                                    </td>
+                                    :
+                                    <td>{index + 1}</td>
+                                }
                                 <td className={"ticket-title"}>{response.ticket.title}</td>
                                 <td className={"ticket-department"}>{response.ticket.department}</td>
                                 <td className={"ticket-opened-date"}>{response.ticket.dateOpened}</td>
