@@ -45,7 +45,7 @@ function OfferDetails(props) {
             }
 
             {response.pendingOffer && response.pendingOffer.map((offer, index) => {
-                return  <div key={index} className="card mx-auto card shadow">
+                return  <div key={index} className="card mx-auto card shadow margin-top-25">
                     <div className="card-body">
                         <h5 className="card-title"><i className="fas fa-user"> </i> {offer.serviceProviderFirstName + " " + offer.serviceProviderLastName}</h5>
 

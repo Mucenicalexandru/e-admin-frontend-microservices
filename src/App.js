@@ -36,6 +36,7 @@ import ReviewDetails from "./service.providers/ReviewDetails";
 import MyBuilding from "./user-view/MyBuilding";
 import Polls from "./user-view/Polls";
 import Vote from "./user-view/Vote";
+import SeePersonalTickets from "./user-view/SeePersonalTickets";
 
 
 function App() {
@@ -89,6 +90,7 @@ function App() {
                 <Route exact path={'/my-building'} component={MyBuilding}/>
                 <Route exact path={'/polls'} component={Polls}/>
                 <Route exact path={'/vote'} component={Vote}/>
+                <Route exact path={'/user-personal-tickets'} component={SeePersonalTickets}/>
 
 
 

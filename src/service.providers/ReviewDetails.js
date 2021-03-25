@@ -52,28 +52,28 @@ function ReviewDetails(props) {
                 </div>
 
 
-
+                { serviceProvider.starStatistics &&
                 <div className={"margin-top-25"}>
                     <div className={"margin-bottom-25"}>
-                        <span className={"blue-underline"}>5 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[5]})</span><ProgressBar variant="success" now={serviceProvider.starStatistics[5] * 100 / serviceProvider.totalReviews} />
+                        <span className={"blue-underline"}>5 stars ({serviceProvider.starStatistics[5]})</span><ProgressBar variant="success" now={serviceProvider.starStatistics[5] * 100 / serviceProvider.totalReviews} />
                     </div>
 
                     <div className={"margin-bottom-25"}>
-                        <span className={"blue-underline"} >4 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[4]})</span><ProgressBar variant="warning" now={serviceProvider.starStatistics[4] * 100 / serviceProvider.totalReviews}/>
+                        <span className={"blue-underline"} >4 stars ({serviceProvider.starStatistics[4]})</span><ProgressBar variant="warning" now={serviceProvider.starStatistics[4] * 100 / serviceProvider.totalReviews}/>
                     </div>
 
                     <div className={"margin-bottom-25"}>
-                        <span className={"blue-underline"} >3 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[3]})</span><ProgressBar variant="danger" now={serviceProvider.starStatistics[3] * 100 / serviceProvider.totalReviews} />
+                        <span className={"blue-underline"} >3 stars ({serviceProvider.starStatistics[3]})</span><ProgressBar variant="danger" now={serviceProvider.starStatistics[3] * 100 / serviceProvider.totalReviews} />
                     </div>
 
                     <div className={"margin-bottom-25"}>
-                        <span className={"blue-underline"} >2 stars ({serviceProvider.starStatistics && serviceProvider.starStatistics[2]})</span><ProgressBar variant="danger" now={serviceProvider.starStatistics[2] * 100 / serviceProvider.totalReviews} />
+                        <span className={"blue-underline"} >2 stars ({serviceProvider.starStatistics[2]})</span><ProgressBar variant="danger" now={serviceProvider.starStatistics[2] * 100 / serviceProvider.totalReviews} />
                     </div>
 
                     <div className={"margin-bottom-25"}>
-                        <span className={"blue-underline"} >1 star ({serviceProvider.starStatistics && serviceProvider.starStatistics[1]})</span><ProgressBar variant="info" now={serviceProvider.starStatistics[1] * 100 / serviceProvider.totalReviews} />
+                        <span className={"blue-underline"} >1 star ({serviceProvider.starStatistics[1]})</span><ProgressBar variant="info" now={serviceProvider.starStatistics[1] * 100 / serviceProvider.totalReviews} />
                     </div>
-                </div>
+                </div>}
 
 
                 <div style={{"marginTop" : "80px", "marginLeft" : "50px"}}>

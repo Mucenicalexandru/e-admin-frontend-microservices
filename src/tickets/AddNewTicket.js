@@ -24,7 +24,11 @@ function AddNewTicket(props) {
     });
 
     useEffect(() => {
-        axios.get(`/building/${value.buildingId}`)
+        axios.get(`/building/${value.buildingId}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token'),
+            }
+        })
             .then((response) => {
                 const s = {...ticket}
                 s.street = response.data.street;
@@ -55,20 +59,38 @@ function AddNewTicket(props) {
         <>
             <div className="d-flex justify-content-center">
 
-                {redirect && <Redirect to={{
-                    pathname : "/tickets",
+                {value.roles.includes("PRESIDENT") &&  redirect &&
+                    <Redirect to={{
+                        pathname : "/tickets",
+                        buildingId : value.buildingId
+                    }} />
+                }
+                {value.roles.includes("USER") &&  redirect &&
+                <Redirect to={{
+                    pathname : "/user-personal-tickets",
                     buildingId : value.buildingId
-                }} />}
+                }} />
+                }
+
 
                 <form action="" onSubmit={handleSubmit}>
-                    <h1>Add Ticket</h1>
+                    {value.roles.includes("USER") ?
+                        <h1>Add Personal Ticket</h1>
+                        :
+                        <h1>Add Ticket</h1>
+                    }
+
 {/*DEPARTMENT*/}
                     <div className="input-group mb-3 margin-top-25">
 
                         <select className="custom-select" id="inputGroupSelect01" required value={ticket.department} onChange={e =>{
                             const s = {...ticket};
+                            value.roles.includes("USER") ?
+                                s.type = "Personal"
+                                :
+                                s.type = "Administrative";
+
                             s.department = e.target.value;
-                            s.type = "Administrative";
                             s.buildingId = value.buildingId;
                             s.groupId = value.groupId;
                             setTicket(s);

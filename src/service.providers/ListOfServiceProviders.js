@@ -37,7 +37,7 @@ function ListOfServiceProviders(props) {
     }
 
     const handleDepartmentChange = (e) => {
-        console.log(`/user/providers-by/${selectedTown}/${e.target.value}`)
+
         axios.get(`/user/providers-by/${selectedTown}/${e.target.value}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')

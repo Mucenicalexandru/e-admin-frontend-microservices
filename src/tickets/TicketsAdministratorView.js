@@ -42,6 +42,7 @@ function TicketsAdministratorView(props) {
     const [group, setGroup] = useState({});
     const [building, setBuilding] = useState({});
     const [ticketId, setTicketId] = useState("");
+    const [status, setStatus] = useState("opened");
     const [refresh, setRefresh] = useState(false);
     const [serviceProviderInModal, setServiceProviderInModal] = useState({});
     const [rating, setRating] = useState("");
@@ -59,7 +60,7 @@ function TicketsAdministratorView(props) {
                 setGroup(response.data);
             })
 
-        axios.get(`/ticket/all-by-group-with-pending-offers/${value.groupId}`, {
+        axios.get(`/ticket/all-by-group-with-pending-offers/${value.groupId}/${status}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
@@ -77,7 +78,7 @@ function TicketsAdministratorView(props) {
                 setAdministrator(response.data);
             })
 
-    }, [value, reset, refresh]);
+    }, [value, reset, refresh, status]);
 
     const [review, setReview] = useState({
         title : "",
@@ -142,36 +143,15 @@ function TicketsAdministratorView(props) {
                     <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
                         <button type="button" className="btn btn-success margin-right-10" onClick={(e)=> {
                             e.preventDefault();
-                            axios.get(`/ticket/all-by-group-and-status-with-pending-offers/${value.groupId}/opened`, {
-                                headers: {
-                                    Authorization: 'Bearer ' + localStorage.getItem('token'),
-                                }
-                            })
-                                .then(response => {
-                                    setResponseList(response.data);
-                                })
+                            setStatus("opened")
                         }}>Opened tickets</button>
                         <button type="button" className="btn btn-warning margin-right-10" onClick={(e)=> {
                             e.preventDefault();
-                            axios.get(`/ticket/all-by-group-and-status-with-pending-offers/${value.groupId}/in progress`, {
-                                headers: {
-                                    Authorization: 'Bearer ' + localStorage.getItem('token'),
-                                }
-                            })
-                                .then(response => {
-                                    setResponseList(response.data);
-                                })
+                            setStatus("in progress")
                         }}>In Progress tickets</button>
                         <button type="button" className="btn btn-danger margin-right-10" onClick={(e)=> {
                             e.preventDefault();
-                            axios.get(`/ticket/all-by-group-and-status-with-pending-offers/${value.groupId}/closed`, {
-                                headers: {
-                                    Authorization: 'Bearer ' + localStorage.getItem('token'),
-                                }
-                            })
-                                .then(response => {
-                                    setResponseList(response.data);
-                                })
+                            setStatus("closed")
                         }}>Closed Tickets</button>
                     </div>
 
@@ -179,6 +159,7 @@ function TicketsAdministratorView(props) {
                         <button type="button" className="btn btn-outline-info btn-sm" hidden={buttonVisibility} onClick={(e) => {
                             e.preventDefault();
                             setButtonVisibility(!buttonVisibility);
+                            setStatus("opened");
                             setReset(!reset);
                         }}>Reset search</button>
                     </div>

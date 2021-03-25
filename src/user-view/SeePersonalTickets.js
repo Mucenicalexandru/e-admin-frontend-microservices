@@ -1,77 +1,44 @@
 import React, {useContext, useEffect, useState} from 'react';
+import {UserContext} from "../context/UserContext";
 import axios from "axios";
 import {Link, Redirect} from "react-router-dom";
-import '../App.css';
-import {UserContext} from "../context/UserContext";
+import ReactStars from "react-rating-stars-component";
+import Modal from "react-modal";
 
-function SeeTickets(props) {
+function SeePersonalTickets(props) {
 
     const value = useContext(UserContext);
-    let buildingId = value.buildingId;
-
-    const [ticketList, setTicketList] = useState([]);
-    const [buttonVisibility, setButtonVisibility] = useState(true);
     const [redirect, setRedirect] = useState(false);
-    const [reset, setReset] = useState(true);
+    const [refresh, setRefresh] = useState(false);
+    const [ticketList, setTicketList] = useState([]);
     const [status, setStatus] = useState("opened");
 
     useEffect(() => {
-        axios.get(`/ticket/get-all-filter/${status}/Administrative/${value.buildingId}`, {
+        axios.get(`/ticket/get-all-filter/${status}/Personal/${value.buildingId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),
             }
         })
-            .then(response => {
+            .then((response) => {
                 setTicketList(response.data);
             })
-    }, [buildingId, reset, status])
+    }, [value])
 
 
     return (
-        <div>
+        <>
 
-            <h1 className="d-flex justify-content-center" >Building Tickets</h1>
+            <h1 className="d-flex justify-content-center">My Tickets</h1>
 
             {redirect && <Redirect to={{
                 pathname : "/add-ticket",
-                buildingId : buildingId
             }} />}
 
-            <div className="d-flex justify-content-center">
-                <button type="button" className="btn btn-outline-info" onClick={(e) => {
-                    e.preventDefault();
-                    setButtonVisibility(!buttonVisibility);
-                }}>Advanced Search</button>
-                {value.roles.includes("PRESIDENT") &&
-                <button type="button" className="btn btn-outline-info margin-left-10" onClick={(e) => {
+            <div className="d-flex justify-content-center margin-25">
+                <button className="btn btn-outline-primary" onClick={(e) => {
                     e.preventDefault();
                     setRedirect(true);
-                }}>Add Ticket</button>}
-            </div>
-
-            <div hidden={buttonVisibility}>
-                <div className="d-flex justify-content-center margin-bottom-25 margin-top-25">
-                    <button type="button" className="btn btn-success margin-right-10" onClick={(e)=> {
-                        e.preventDefault();
-                        setStatus("opened")
-                    }}>Opened tickets</button>
-                    <button type="button" className="btn btn-warning margin-right-10" onClick={(e)=> {
-                        e.preventDefault();
-                        setStatus("in progress")
-                    }}>In Progress tickets</button>
-                    <button type="button" className="btn btn-danger margin-right-10" onClick={(e)=> {
-                        e.preventDefault();
-                        setStatus("closed")
-                    }}>Closed Tickets</button>
-                </div>
-            </div>
-
-            <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
-                <button type="button" className="btn btn-outline-info btn-sm" hidden={buttonVisibility} onClick={(e) => {
-                    e.preventDefault();
-                    setButtonVisibility(!buttonVisibility);
-                    setReset(!reset);
-                }}>Reset search</button>
+                }}>Add ticket</button>
             </div>
 
             <div className="d-flex justify-content-center">
@@ -134,15 +101,8 @@ function SeeTickets(props) {
                 </table>
             </div>
 
-            <div className="d-flex justify-content-center margin-top-25">
-                <button className="btn btn-outline-dark margin-bottom-25 margin-right-10" onClick={(e) => {
-                    e.preventDefault();
-                    window.history.back();
-                }}>Back</button>
-            </div>
-
-        </div>
+        </>
     );
 }
 
-export default SeeTickets;
+export default SeePersonalTickets;
