@@ -52,6 +52,7 @@ function TicketsAdministratorAndPersonalView(props) {
     const [administrator, setAdministrator] = useState({});
 
     useEffect(() => {
+        console.log(type)
         axios.get(`/group/get-by-id/${value.groupId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -344,26 +345,52 @@ function TicketsAdministratorAndPersonalView(props) {
                                     <Link to={{
                                         pathname : '/assigned-service-provider',
                                         providerId : response.ticket.assignedServiceProviderUserId,
-                                        groupId : value.groupId}}>See assigned provider
+                                        groupId : value.groupId,
+                                        type : type}}>See assigned provider,
                                     </Link>
                                 </td>
-                                <td className={"ticket-closed"}>
-                                    <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
-                                        e.preventDefault();
-                                        response.ticket && setTicketId(response.ticket.ticketId);
-                                        axios.get(`/user/${response.ticket.assignedServiceProviderUserId}`, {
-                                            headers: {
-                                                Authorization: 'Bearer ' + localStorage.getItem('token'),
-                                            }
-                                        })
-                                            .then(response => {
-                                                setServiceProviderInModal(response.data);
+                                {type === "Administrative" && value.roles.includes("ADMINISTRATOR") ?
+                                    <td className={"ticket-closed"}>
+                                        <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
+                                            e.preventDefault();
+                                            response.ticket && setTicketId(response.ticket.ticketId);
+                                            axios.get(`/user/${response.ticket.assignedServiceProviderUserId}`, {
+                                                headers: {
+                                                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                                }
                                             })
-                                        setIsOpen(true)
-                                        setRating("")}
-                                    }>Mark as done
-                                    </button>
-                                </td>
+                                                .then(response => {
+                                                    setServiceProviderInModal(response.data);
+                                                })
+                                            setIsOpen(true)
+                                            setRating("")
+                                        }
+                                        }>Mark as done
+                                        </button>
+                                    </td>
+                                    :
+                                    type === "Personal" && value.roles.includes("USER") ?
+                                        <td className={"ticket-closed"}>
+                                            <button className="btn btn-outline-dark btn-sm" onClick={(e) => {
+                                                e.preventDefault();
+                                                response.ticket && setTicketId(response.ticket.ticketId);
+                                                axios.get(`/user/${response.ticket.assignedServiceProviderUserId}`, {
+                                                    headers: {
+                                                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                                                    }
+                                                })
+                                                    .then(response => {
+                                                        setServiceProviderInModal(response.data);
+                                                    })
+                                                setIsOpen(true)
+                                                setRating("")
+                                            }
+                                            }>Mark as done
+                                            </button>
+                                        </td>
+                                        :
+                                        <td>{response.ticket && response.ticket.dateClosed}</td>
+                                }
                                 <td className="status"><span className={"orange"}>{response.ticket.status}</span></td>
                             </tr>
                     })}

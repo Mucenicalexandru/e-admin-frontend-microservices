@@ -8,6 +8,7 @@ import {AverageStarRating} from "../util/AverageStarRating";
 function ReviewDetails(props) {
 
     let providerId = props.location.providerId;
+    let type = props.location.type;
     let rating = props.location.rating;
     const [serviceProvider, setServiceProvider] = useState({});
     const [isLoading, setIsLoading] = useState(false);
@@ -101,7 +102,8 @@ function ReviewDetails(props) {
             <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
                 <Link to={{
                     pathname : "/assigned-service-provider",
-                    providerId : providerId
+                    providerId : providerId,
+                    type : type
                 }}>
                     <button className="btn btn-outline-dark margin-right-5">Back</button>
                 </Link>

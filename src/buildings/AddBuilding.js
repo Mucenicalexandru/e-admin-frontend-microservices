@@ -32,7 +32,7 @@ function AddBuilding(props) {
                 setBuilding(s);
                 setGroup(response.data);
             })
-    }, [building, groupId])
+    }, [groupId])
 
     const handleSubmit = (e) => {
         e.preventDefault();

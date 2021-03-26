@@ -38,7 +38,8 @@ function SeeAssignedServiceOfferDetails(props) {
                                 pathname : '/review-details',
                                 providerId : providerId,
                                 averageStarRating : serviceProvider.averageStars,
-                                rating : serviceProvider.averageStars }}>
+                                rating : serviceProvider.averageStars,
+                                type : type}}>
                                 {serviceProvider.totalReviews} reviews
                             </Link>
                         </p>
@@ -57,35 +58,15 @@ function SeeAssignedServiceOfferDetails(props) {
 
             </div>
             <div className="d-flex justify-content-center margin-top-25">
-                {value.roles.includes("ADMINISTRATOR") &&
+
                 <Link to={{
                     pathname: "/see-offers",
                     groupId: groupId,
-                    type : type
-                }}>
-                    <button className="btn btn-outline-dark margin-right-5">Back</button>
-                </Link>
-                }
-
-                {value.roles.includes("PRESIDENT") &&
-                <Link to={{
-                    pathname: "/see-offers",
                     buildingId: value.buildingId,
                     type : type
                 }}>
                     <button className="btn btn-outline-dark margin-right-5">Back</button>
                 </Link>
-                }
-
-                {value.roles.includes("USER") &&
-                <Link to={{
-                    pathname: "/user-personal-tickets"
-                }}>
-                    <button className="btn btn-outline-dark margin-right-5">Back</button>
-                </Link>
-                }
-
-
             </div>
 
         </div>
