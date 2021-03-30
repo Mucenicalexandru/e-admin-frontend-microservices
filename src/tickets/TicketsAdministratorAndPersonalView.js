@@ -346,7 +346,7 @@ function TicketsAdministratorAndPersonalView(props) {
                                         pathname : '/assigned-service-provider',
                                         providerId : response.ticket.assignedServiceProviderUserId,
                                         groupId : value.groupId,
-                                        type : type}}>See assigned provider,
+                                        type : type}}>See assigned provider
                                     </Link>
                                 </td>
                                 {type === "Administrative" && value.roles.includes("ADMINISTRATOR") ?

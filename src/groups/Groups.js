@@ -65,7 +65,7 @@ function Groups(props) {
                             </Link> : null}
                     </div>
 
-
+                    <div className='row align-items-center' style={{"padding": "0"}}>
                     {groupList.map((group, index) => {
                         return <div key={index} className="card mx-auto card margin-bottom-25 margin-top-15 shadow">
                             <div>
@@ -104,8 +104,7 @@ function Groups(props) {
 
                         </div>
                     })}
-
-
+                    </div>
                 </div>
                 :
                 <div>

@@ -38,7 +38,7 @@ function SeeBuildings(props) {
                     <button className="btn btn-outline-dark">Back to group</button>
                 </Link>
             </div>
-
+            <div className='row align-items-center'>
             {buildingList && buildingList.map((building, index) => {
                 if(value.buildingId === building.building.buildingId){
                     return <div className="card mx-auto margin-top-25 my-card shadow" key={index}>
@@ -164,7 +164,7 @@ function SeeBuildings(props) {
                 }
 
             })}
-
+            </div>
         </>
     )
 

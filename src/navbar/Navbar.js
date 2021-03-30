@@ -36,8 +36,14 @@ function Navbar(props) {
 {/*GENERAL NAVBAR*/}
                     <ProviderListNavbarComponent/>
 {/*                    <Profile/>*/}
+
                     {value ? null : <RegisterLink/>}
+                    <Link to={"/contact"} className="nav-link" style={{"color": "white"}}>
+                        <i className="far fa-address-card"> </i> Contact</Link>
                     <AuthenticationButton/>
+
+
+
                 </div>
             </NavStyle>
         </div>

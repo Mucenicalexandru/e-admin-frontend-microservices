@@ -8,7 +8,8 @@ function RegisterLink(props) {
         <Link to={{
             pathname : "/register"
         }}>
-            <p className="nav-link" style={{"color" : "white"}}>Register</p>
+            <p className="nav-link" style={{"color" : "white"}}>
+                <i className="far fa-registered"> </i> Register</p>
 
         </Link>
     );

@@ -10,6 +10,7 @@ function ReviewDetails(props) {
     let providerId = props.location.providerId;
     let type = props.location.type;
     let rating = props.location.rating;
+    let providersList = props.location.providersList;
     const [serviceProvider, setServiceProvider] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [serviceProviderReviewList, setServiceProviderReviewList] = useState([]);
@@ -23,7 +24,6 @@ function ReviewDetails(props) {
             }
         })
             .then(response => {
-                console.log(response.data.starStatistics)
                 setServiceProvider(response.data);
                 setIsLoading(true);
             })
@@ -99,15 +99,26 @@ function ReviewDetails(props) {
                 </div>
 
             </div>
-            <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
-                <Link to={{
-                    pathname : "/assigned-service-provider",
-                    providerId : providerId,
-                    type : type
-                }}>
-                    <button className="btn btn-outline-dark margin-right-5">Back</button>
-                </Link>
-            </div>
+            {providersList === "providersList" ?
+                <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
+                    <Link to={{
+                        pathname : "/service-providers"
+                    }}>
+                        <button className="btn btn-outline-dark margin-right-5">Back</button>
+                    </Link>
+                </div>
+            :
+                <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
+                    <Link to={{
+                        pathname : "/assigned-service-provider",
+                        providerId : providerId,
+                        type : type
+                    }}>
+                        <button className="btn btn-outline-dark margin-right-5">Back</button>
+                    </Link>
+                </div>
+            }
+
 
         </div>
     );

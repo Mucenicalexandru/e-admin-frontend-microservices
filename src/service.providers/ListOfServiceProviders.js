@@ -4,23 +4,24 @@ import {Link} from "react-router-dom";
 import {UserContext} from "../context/UserContext";
 import {departments} from "../util/departments";
 import {cities} from "../util/cities";
+import {AverageStarRating} from "../util/AverageStarRating";
 
 function ListOfServiceProviders(props) {
 
     const value = useContext(UserContext);
-    const [providersList, setProviderList] = useState();
+    const [responseList, setResponseList] = useState();
     const [dropdownHidden, setDropdownHidden] = useState(true);
     const [selectedTown, setSelectedTown] = useState("");
     const [reset, setReset] = useState(true);
 
     useEffect(() => {
-        axios.get(`/user/all-by-role/SERVICE_PROVIDER`, {
+        axios.get(`/user/all-providers-with-reviews`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
         })
             .then(response => {
-                setProviderList(response.data);
+                setResponseList(response.data);
             })
     }, [value, reset])
 
@@ -32,7 +33,7 @@ function ListOfServiceProviders(props) {
             }
         })
             .then(response => {
-                setProviderList(response.data);
+                setResponseList(response.data);
             })
     }
 
@@ -44,7 +45,7 @@ function ListOfServiceProviders(props) {
             }
         })
             .then(response => {
-                setProviderList(response.data);
+                setResponseList(response.data);
             })
     }
 
@@ -119,35 +120,32 @@ function ListOfServiceProviders(props) {
                             </tr>
                             </thead>
                             <tbody>
-                            {providersList && providersList.map((provider, index) => {
-                                let number = 0;
-                                provider.reviews && provider.reviews.forEach(review => {
-                                    number += review.starNumber;
-                                })
+                            {responseList && responseList.map((response, index) => {
                                 return <tr key={index}>
                                     {value.roles.includes("ADMIN") ?
-                                        <td className="index">{provider.userId}</td>
+                                        <td className="index">{response.user && response.user.userId}</td>
                                         :
                                         <td className="index">{index + 1}</td>
                                     }
-                                    <td className="provider-firstName">{provider.firstName}</td>
-                                    <td className="provider-lastName">{provider.lastName}</td>
-                                    <td className="provider-phone">{provider.phone}</td>
-                                    <td className="provider-email"><span className={"blue-underline"}>{provider.email}</span></td>
-                                    <td className="provider-company">{provider.company}</td>
-                                    <td className="provider-site">{provider.website}</td>
-                                    <td className="provider-department">{provider.department}</td>
-                                    <td>{provider.town}</td>
-                                    <td>{provider.country}</td>
-                                    {provider.reviews && provider.reviews.length > 0 ?
+                                    <td className="provider-firstName">{response.user && response.user.firstName}</td>
+                                    <td className="provider-lastName">{response.user && response.user.lastName}</td>
+                                    <td className="provider-phone">{response.user && response.user.phone}</td>
+                                    <td className="provider-email"><span className={"blue-underline"}>{response.user && response.user.email}</span></td>
+                                    <td className="provider-company">{response.user && response.user.company}</td>
+                                    <td className="provider-site">{response.user && response.user.website}</td>
+                                    <td className="provider-department">{response.user && response.user.department}</td>
+                                    <td>{response.user && response.user.town}</td>
+                                    <td>{response.user && response.user.country}</td>
+                                    {response.totalReviews >  0 ?
                                         <td className="provider-rating">
                                             <Link to={{
                                                 pathname : '/review-details',
-                                                providerId : provider.id,
-                                                // averageStarRating : AverageStarRating(Math.round(number / provider.reviews.length * 10) / 10),
-                                                rating : Math.round(number / provider.reviews.length * 10) / 10 }}>
-                                                {Math.round(number / provider.reviews.length * 10) / 10}
-                                                {/*{AverageStarRating(Math.round(number / provider.reviews.length * 10) / 10)}*/}
+                                                providerId : response.user.userId,
+                                                rating : response.averageStars,
+                                                providersList : "providersList"
+                                                 }}>
+                                                {response.averageStars.toString().substring(0, 4) + " "}
+                                                {AverageStarRating(response.averageStars)}
                                             </Link>
                                         </td>
                                         :
@@ -167,6 +165,7 @@ function ListOfServiceProviders(props) {
                 </div>
 
                 :
+
                 <div>
                     <h1 className="d-flex justify-content-center">Service Providers</h1>
 
@@ -207,26 +206,22 @@ function ListOfServiceProviders(props) {
                             </tr>
                             </thead>
                             <tbody>
-                            {providersList && providersList.map((provider, index) => {
-                                let number = 0;
-                                provider.reviews && provider.reviews.forEach(review => {
-                                    number += review.starNumber;
-                                })
+                            {responseList && responseList.map((response, index) => {
                                 return <tr key={index}>
                                     <td className="index">{index + 1}</td>
-                                    <td className="provider-firstName">{provider.firstName}</td>
+                                    <td className="provider-firstName">{response.user && response.user.firstName}</td>
                                     <td className="provider-lastName filter">Lastname</td>
                                     <td className="provider-phone filter">0721456789</td>
                                     <td className="provider-email filter"><span className={"blue-underline"}>provider@email.com</span></td>
-                                    <td className="provider-company">{provider.company}</td>
-                                    <td className="provider-site">{provider.website}</td>
-                                    <td className="provider-department">{provider.department}</td>
-                                    <td>{provider.town}</td>
-                                    <td>{provider.country}</td>
-                                    {provider.reviews.length > 0 ?
+                                    <td className="provider-company">{response.user && response.user.company}</td>
+                                    <td className="provider-site">{response.user && response.user.website}</td>
+                                    <td className="provider-department">{response.user && response.user.department}</td>
+                                    <td>{response.user && response.user.town}</td>
+                                    <td>{response.user && response.user.country}</td>
+                                    {response.totalReviews > 0 ?
                                         <td className="provider-rating">
-                                            {Math.round(number / provider.reviews.length * 10) / 10}
-                                            {/*{AverageStarRating(Math.round(number / provider.reviews.length * 10) / 10)}*/}
+                                            {response.averageStars.toString().substring(0, 4) + " "}
+                                            {AverageStarRating(response.averageStars)}
                                         </td>
                                         :
                                         <td>No reviews received</td>

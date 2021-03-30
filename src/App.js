@@ -35,6 +35,7 @@ import ReviewDetails from "./service.providers/ReviewDetails";
 import MyBuilding from "./user-view/MyBuilding";
 import Polls from "./user-view/Polls";
 import Vote from "./user-view/Vote";
+import Contact from "./contact/Contact";
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
           <Router>
                 <Navbar/>
                 <Route exact path={'/'} component={HomePage}/>
+                <Route exact path={'/contact'} component={Contact}/>
 
                 <Route exact path={'/register'} component={Register}/>
                 <Route exact path={'/login'} component={Login}/>
