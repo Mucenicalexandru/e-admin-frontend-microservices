@@ -7,7 +7,7 @@ function EditCensor(props) {
 
     let groupId = props.location.groupId;
     let linkFromGroup = props.location.linkFromGroup;
-
+    let comingFrom = props.location.comingFrom;
     let userId = props.location.userId;
     let censorFirstName = props.location.censorFirstName;
     let censorLastName = props.location.censorLastName;
@@ -37,10 +37,15 @@ function EditCensor(props) {
         <>
             <h1 className="d-flex justify-content-center" >Edit Censor</h1>
             <div className="d-flex justify-content-center margin-top-25">
-                {redirect && <Redirect to={{
-                    pathname : "/group",
-                    groupId : groupId
-                }} />}
+                {comingFrom === "users-statistics" ?
+                    redirect && <Redirect to={{
+                        pathname : "/users-statistics"
+                    }} />
+                    :
+                    redirect && <Redirect to={{
+                        pathname : "/group",
+                        groupId : groupId
+                    }} />}
                 <form action="" onSubmit={handleSubmit}>
 {/*ADMINISTRATOR FIRST NAME*/}
                     <div>

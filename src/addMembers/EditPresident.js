@@ -7,7 +7,7 @@ function EditPresident(props) {
 
     let groupId = props.location.groupId;
     let linkFromBuilding = props.location.linkFromBuilding;
-
+    let comingFrom = props.location.comingFrom;
     let userId = props.location.userId;
     let presidentFirstName = props.location.presidentFirstName;
     let presidentLastName = props.location.presidentLastName;
@@ -23,6 +23,7 @@ function EditPresident(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         axios.put(`/user/edit/${userId}`, president, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -37,10 +38,17 @@ function EditPresident(props) {
         <div>
             <h1 className="d-flex justify-content-center" >Add President</h1>
             <div className="d-flex justify-content-center margin-top-25">
-                {redirect && <Redirect to={{
-                    pathname : "/see-buildings",
-                    groupId : groupId
-                }} />}
+
+                {comingFrom === "users-statistics" ?
+                    redirect && <Redirect to={{
+                        pathname : "/users-statistics"
+                    }} />
+                :
+                    redirect && <Redirect to={{
+                        pathname : "/see-buildings",
+                        groupId : groupId
+                    }} />
+                }
 
                 <form action="" onSubmit={handleSubmit}>
 {/*PRESIDENT FIRST NAME*/}

@@ -7,6 +7,7 @@ function SeeUsers(props) {
     const [isLoading, setIsLoading] = useState(true);
     const [userList, setUserList] = useState([]);
     const [townDropdownHidden, setTownDropdownHidden] = useState(true);
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         axios.get(`/user/all-by-role/USER`, {
@@ -18,7 +19,7 @@ function SeeUsers(props) {
                 setUserList(response.data);
                 setIsLoading(false);
             })
-    }, [isLoading])
+    }, [isLoading, refresh])
 
     const handleTownChange = (e) => {
         axios.get(`/user/all-by-town/${e.target.value}`, {
@@ -110,7 +111,18 @@ function SeeUsers(props) {
                         <td>{user.country}</td>
                         <td>{user.roles}</td>
                         {!user.roles.includes("ADMIN") ?
-                            <td><button type="button" className="btn  btn-outline-danger btn-sm">Remove</button></td>
+                            <td><button type="button" className="btn  btn-outline-danger btn-sm" onClick={(e) => {
+                            e.preventDefault();
+                            axios.delete(`/user/delete-by-userId/${user.userId}`, {
+                                headers: {
+                                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                                }
+                                })
+                                .then(() => {
+                                    setRefresh(!refresh);
+                                })
+                            }
+                            }>Remove</button></td>
                             :
                             null
                         }

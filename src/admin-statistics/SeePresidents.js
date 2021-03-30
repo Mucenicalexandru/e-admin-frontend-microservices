@@ -6,7 +6,7 @@ function SeePresidents(props) {
 
     const [isLoading, setIsLoading] = useState(true);
     const [presidentsList, setPresidentsList] = useState([]);
-    const [editPresident, setEditPresident] = useState(false);
+
 
     useEffect(() => {
         axios.get(`/user/all-by-role/PRESIDENT`, {
@@ -49,10 +49,13 @@ function SeePresidents(props) {
                             <td>
                                 <Link to={{
                                     pathname : "/edit-president",
+                                    groupId : president.groupId,
                                     presidentFirstName : president.firstName,
                                     presidentLastName : president.lastName,
                                     presidentPhone : president.phone,
-                                    presidentId : president.id
+                                    presidentId : president.userId,
+                                    comingFrom : "users-statistics",
+                                    userId : president.userId
                                 }}>
                                     <button type="button" className="btn  btn-outline-success btn-sm" >Edit</button>
                                 </Link>

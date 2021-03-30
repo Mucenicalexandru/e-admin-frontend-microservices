@@ -8,7 +8,7 @@ function EditAdministrator(props) {
 
     let groupId = props.location.groupId;
     let linkFromGroup = props.location.linkFromGroup;
-
+    let comingFrom = props.location.comingFrom;
     let userId = props.location.userId;
     let administratorFirstName = props.location.administratorFirstName;
     let administratorLastName = props.location.administratorLastName;
@@ -39,10 +39,16 @@ function EditAdministrator(props) {
         <>
             <h1 className="d-flex justify-content-center" >Edit Administrator</h1>
             <div className="d-flex justify-content-center margin-top-25">
-                {redirect && <Redirect to={{
-                    pathname : "/group",
-                    groupId : groupId
-                }} />}
+                {comingFrom === "users-statistics" ?
+                    redirect && <Redirect to={{
+                        pathname : "/users-statistics"
+                    }} />
+                :
+                    redirect && <Redirect to={{
+                        pathname : "/group",
+                        groupId : groupId
+                    }} />}
+
                 <form action="" onSubmit={handleSubmit}>
 {/*ADMINISTRATOR FIRST NAME*/}
                     <div>
@@ -86,7 +92,7 @@ function EditAdministrator(props) {
                         </Link>
                     }
 
-                    <SaveButton name={"Update"}/>
+                    <SaveButton name={"Update"} />
 
                 </form>
 

@@ -52,7 +52,8 @@ function SeeCensors(props) {
                                     censorFirstName : censor.firstName,
                                     censorLastName : censor.lastName,
                                     censorPhone : censor.phone,
-                                    censorId : censor.id
+                                    censorId : censor.id,
+                                    comingFrom : "users-statistics"
                                 }}>
                                     <button type="button" className="btn  btn-outline-success btn-sm" >Edit</button>
                                 </Link>

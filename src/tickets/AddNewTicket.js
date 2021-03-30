@@ -20,7 +20,8 @@ function AddNewTicket(props) {
         type : "",
         street : "",
         number : "",
-        town : ""
+        town : "",
+        userId : ""
 
     });
 
@@ -89,10 +90,17 @@ function AddNewTicket(props) {
 
                         <select className="custom-select" id="inputGroupSelect01" required value={ticket.department} onChange={e =>{
                             const s = {...ticket};
+
+
                             value.roles.includes("USER") ?
                                 s.type = "Personal"
                                 :
                                 s.type = "Administrative";
+
+                            value.roles.includes("USER") ?
+                                s.userId = value.userId
+                                :
+                                s.userId = "";
 
                             s.department = e.target.value;
                             s.buildingId = value.buildingId;

@@ -27,7 +27,8 @@ function GroupInfo(props) {
 
     const deleteGroup = (e) => {
         e.preventDefault();
-        axios.delete(`/group/${groupId}`, {
+        console.log(groupId)
+        axios.delete(`/group/delete-by-id/${groupId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }

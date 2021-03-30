@@ -148,7 +148,7 @@ function SeeBuildings(props) {
 
                             {value && value.roles.includes("ADMIN") &&
                             <button className="btn btn-outline-danger float-right" onClick={() => {
-                                axios.delete(`/api/delete-building/${building.building.buildingId}`, {
+                                axios.delete(`/building/delete-by-buildingId/${building.building.buildingId}`, {
                                     headers: {
                                         Authorization: 'Bearer ' + localStorage.getItem('token')
                                     }

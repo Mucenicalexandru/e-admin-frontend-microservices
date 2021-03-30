@@ -51,7 +51,8 @@ function SeeAdministrators(props) {
                                 userId : administrator.userId,
                                 administratorFirstName : administrator.firstName,
                                 administratorLastName : administrator.lastName,
-                                administratorPhone : administrator.phone
+                                administratorPhone : administrator.phone,
+                                comingFrom : "users-statistics"
                             }}>
                             <button type="button" className="btn  btn-outline-success btn-sm" >Edit</button>
                             </Link>
