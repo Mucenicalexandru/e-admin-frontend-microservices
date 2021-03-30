@@ -38,9 +38,11 @@ import Vote from "./user-view/Vote";
 import Contact from "./contact/Contact";
 
 
+
 function App() {
   return (
     <>
+
         <UserProvider>
           <Router>
                 <Navbar/>

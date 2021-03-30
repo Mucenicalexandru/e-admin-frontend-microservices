@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import styled from 'styled-components';
 import AuthenticationButton from "../login/AuthenticationButton";
 import {Link} from "react-router-dom";
@@ -7,6 +7,7 @@ import UserNavbar from "./UserNavbar";
 import AdministratorNavbar from "./AdministratorNavbar";
 import RegisterLink from "../registration/RegisterLink";
 import {UserContext} from "../context/UserContext";
+import {LanguageProvider} from "../context/LanguageContext";
 import PresidentNavbar from "./PresidentNavbar";
 import ProviderListNavbarComponent from "./ProviderListNavbarComponent";
 import ServiceProviderNavbar from "./ServiceProviderNavbar";
@@ -18,6 +19,7 @@ const NavStyle = styled.div`
 function Navbar(props) {
 
     const value = useContext(UserContext);
+
 
     return (
         <div>
@@ -41,7 +43,6 @@ function Navbar(props) {
                     <Link to={"/contact"} className="nav-link" style={{"color": "white"}}>
                         <i className="far fa-address-card"> </i> Contact</Link>
                     <AuthenticationButton/>
-
 
 
                 </div>
