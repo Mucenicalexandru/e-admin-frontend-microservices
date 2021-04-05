@@ -72,7 +72,6 @@ function TicketsAdministratorAndPersonalView(props) {
                     setResponseList(response.data);
                 })
         }else if(type === "Personal"){
-            console.log("PErsonal")
             axios.get(`/ticket/all-by-user-with-pending-offers/${value.userId}/${status}`, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token')

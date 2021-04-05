@@ -7,9 +7,11 @@ function WonTickets(props) {
 
     const value = useContext(UserContext);
     const [myTicketList, setMyTicketList] = useState([]);
+    const [status, setStatus] = useState("in progress");
+    const [buttonVisibility, setButtonVisibility] = useState(true);
 
     useEffect(() => {
-        axios.get(`/ticket/assigned-service-provider/${value.userId}`, {
+        axios.get(`/ticket/assigned-service-provider/${value.userId}/${status}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
             }
@@ -17,12 +19,35 @@ function WonTickets(props) {
             .then(response => {
                 setMyTicketList(response.data);
             })
-    }, [value])
+    }, [value, status])
 
 
     return (
         <>
             <h1 className="d-flex justify-content-center">My Tickets</h1>
+            <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
+            <button type="button" className="btn btn-outline-info" onClick={(e) => {
+                e.preventDefault();
+                setButtonVisibility(!buttonVisibility);
+            }}>Advanced Search</button>
+            </div>
+            <div hidden={buttonVisibility}>
+                <div className="d-flex justify-content-center margin-top-25 margin-bottom-25">
+                    <button type="button" className="btn btn-success margin-right-10" onClick={(e)=> {
+                        e.preventDefault();
+                        setStatus("opened")
+                    }}>Opened tickets</button>
+                    <button type="button" className="btn btn-warning margin-right-10" onClick={(e)=> {
+                        e.preventDefault();
+                        setStatus("in progress")
+                    }}>In Progress tickets</button>
+                    <button type="button" className="btn btn-danger margin-right-10" onClick={(e)=> {
+                        e.preventDefault();
+                        setStatus("closed")
+                    }}>Closed Tickets</button>
+                </div>
+            </div>
+
             <div className="d-flex justify-content-center">
                 <table>
                     <thead>

@@ -6,6 +6,22 @@ import {UserContext} from "../context/UserContext";
 function ServiceProviderNavbar(props) {
 
     const value = useContext(UserContext);
+    const [totalWonTickets, setTotalWonTickets] = useState(0);
+    const [status, setStatus] = useState("in progress");
+
+    useEffect(() => {
+        value &&
+        axios.get(`/ticket/assigned-service-provider/${value.userId}/${status}`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+            .then(response => {
+                console.log(response.data.length)
+                setTotalWonTickets(response.data.length);
+            })
+    }, [value])
+
 
     return (
         <>
@@ -15,7 +31,7 @@ function ServiceProviderNavbar(props) {
                 null}
 
             {value && value.roles.includes("SERVICE_PROVIDER") ?
-                <Link className="nav-link" style={{"color": "white", "cursor": "pointer"}} to={"/my-tickets"}>My Tickets (5)</Link>
+                <Link className="nav-link" style={{"color": "white", "cursor": "pointer"}} to={"/my-tickets"}>My Tickets ({totalWonTickets})</Link>
                 :
                 null}
 
