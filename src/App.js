@@ -37,14 +37,12 @@ import Polls from "./user-view/Polls";
 import Vote from "./user-view/Vote";
 import Contact from "./contact/Contact";
 
-
-
 function App() {
   return (
     <>
 
-        <UserProvider>
-          <Router>
+            <UserProvider>
+             <Router>
                 <Navbar/>
                 <Route exact path={'/'} component={HomePage}/>
                 <Route exact path={'/contact'} component={Contact}/>
@@ -93,8 +91,8 @@ function App() {
                 <Route exact path={'/vote'} component={Vote}/>
 
 
-          </Router>
-        </UserProvider>
+            </Router>
+            </UserProvider>
     </>
   );
 }

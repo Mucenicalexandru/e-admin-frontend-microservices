@@ -37,7 +37,7 @@ function ProviderRegister(props) {
         e.preventDefault();
         axios.post(`/user/add-service-provider`, serviceProvider)
             .then((response) => {
-                if(response.status === 201){
+                if(response.status === 202){
                     setSuccessfullyRegistered(true)
                 }
             })
@@ -125,7 +125,7 @@ function ProviderRegister(props) {
                                        setServiceProvider(s);
                                    }}/>
                         </div>
-  {/*PROVIDER EMAIL*/}
+{/*PROVIDER EMAIL*/}
                         <div>
                             <input style={{"marginTop": "10px"}} type="text" name="email" value={serviceProvider.email} required placeholder="Email"
                                    onChange={e => {
@@ -154,7 +154,7 @@ function ProviderRegister(props) {
                         </div>
 {/*PROVIDER PASSWORD*/}
                         <div>
-                            <input style={{"marginTop": "10px"}} type="text" name="email" value={serviceProvider.password} required  placeholder="Password"
+                            <input style={{"marginTop": "10px"}} type="password" name="email" value={serviceProvider.password} required  placeholder="Password"
                                    onChange={e => {
                                        const s = {...serviceProvider};
                                        s.password = e.target.value;

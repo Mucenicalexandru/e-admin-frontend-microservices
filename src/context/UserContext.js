@@ -1,4 +1,4 @@
-import React, {createContext} from 'react';
+import React, {createContext, useState} from 'react';
 
 export const UserContext = createContext();
 
@@ -7,6 +7,7 @@ export const UserContext = createContext();
 export const UserProvider = props => {
 
     let token = localStorage.getItem('token');
+    const [language, setLanguage] = useState("English");
 
     function parseJwt(token) {
         if(token){

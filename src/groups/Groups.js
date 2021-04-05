@@ -36,11 +36,41 @@ function Groups(props) {
         setShowAll(!showAll);
     }
 
+    const handleSearch = (e) => {
+        let search = "";
+        search = e.target.value.toString().charAt(0).toUpperCase() + e.target.value.toString().substring(1);
+
+        if(e.target.value === ""){
+            console.log("empty")
+            setShowAll(true)
+        }else{
+            console.log("with letters")
+            axios.get(`/group/search/${search}`, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
+            })
+                .then((response) => {
+                    setGroupList(response.data);
+                    setShowAll(false);
+                })
+        }
+
+    }
+
     return (
         <>
             { value
                 ?
                 <div>
+
+                    <div  className="d-flex justify-content-center margin-top-15">
+                        <form className="form-inline my-2 my-lg-0">
+                            <input className="form-control mr-sm-2" type="search" placeholder="Search"
+                                   aria-label="Search" onChange={handleSearch}/>
+                        </form>
+                    </div>
+
                     <div className="d-flex justify-content-center margin-top-15">
                         <button className="btn btn-outline-primary" onClick={handleClick}>Show all</button>
                     </div>
@@ -55,6 +85,7 @@ function Groups(props) {
                             </select>
                         </div>
                     </div>
+
 
 
 
@@ -108,6 +139,13 @@ function Groups(props) {
                 </div>
                 :
                 <div>
+                    <div  className="d-flex justify-content-center margin-top-15">
+                        <form className="form-inline my-2 my-lg-0">
+                            <input className="form-control mr-sm-2" type="search" placeholder="Search"
+                                   aria-label="Search" onChange={handleSearch}/>
+                        </form>
+                    </div>
+
                     <div className="d-flex justify-content-center margin-top-15">
                         <button className="btn btn-outline-primary" onClick={handleClick}>Show all</button>
                     </div>
@@ -122,7 +160,7 @@ function Groups(props) {
                             </select>
                         </div>
                     </div>
-
+                    <div className='row align-items-center' style={{"padding": "0"}}>
                     {groupList.map((group, index) => {
                         return <div key={index} className="card mx-auto card margin-bottom-25 margin-top-15">
                             <div>
@@ -136,6 +174,7 @@ function Groups(props) {
                             </div>
                         </div>
                     })}
+                    </div>
 
 
                 </div>

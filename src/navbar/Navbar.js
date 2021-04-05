@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
 import AuthenticationButton from "../login/AuthenticationButton";
 import {Link} from "react-router-dom";
@@ -7,10 +7,11 @@ import UserNavbar from "./UserNavbar";
 import AdministratorNavbar from "./AdministratorNavbar";
 import RegisterLink from "../registration/RegisterLink";
 import {UserContext} from "../context/UserContext";
-import {LanguageProvider} from "../context/LanguageContext";
 import PresidentNavbar from "./PresidentNavbar";
 import ProviderListNavbarComponent from "./ProviderListNavbarComponent";
 import ServiceProviderNavbar from "./ServiceProviderNavbar";
+
+
 
 const NavStyle = styled.div`
   background-color: #1f4253;
@@ -20,7 +21,6 @@ function Navbar(props) {
 
     const value = useContext(UserContext);
 
-
     return (
         <div>
             <NavStyle>
@@ -28,7 +28,6 @@ function Navbar(props) {
                     <Link to={"/"} className="nav-link" style={{"color": "white"}}>
                         <i className="fas fa-home"> </i> Home</Link>
 {/*NAVBAR BY ROLE*/}
-
                     <UserNavbar/>
                     <PresidentNavbar/>
                     <AdministratorNavbar/>
@@ -43,6 +42,18 @@ function Navbar(props) {
                     <Link to={"/contact"} className="nav-link" style={{"color": "white"}}>
                         <i className="far fa-address-card"> </i> Contact</Link>
                     <AuthenticationButton/>
+
+
+                    <div>
+                        <img className="card " src={`/images/romania.png`} alt={"Smart City Picture"} style={{"width" : "38px", "height" : "28px","borderRadius": "10px", "marginRight" : "5px", "marginLeft" : "130px", "marginTop" : "7px", "cursor" : "pointer"}} onClick={(e) => {
+                            e.preventDefault();
+                        }}/>
+                    </div>
+                    <div>
+                        <img className="card " src={`/images/english.jpeg`} alt={"Smart City Picture"} style={{"width" : "38px", "height" : "28px","borderRadius": "10px", "marginTop" : "7px", "cursor" : "pointer"}} onClick={(e) => {
+                            e.preventDefault();
+                        }}/>
+                    </div>
 
 
                 </div>
