@@ -55,7 +55,7 @@ function Polls(props) {
                                 {response.poll.status === "active" ?
                                     response.usersWhoAlreadyVoted.includes(value.userId) ?
                                         <td>
-                                            Already voted
+                                            <i>Already voted</i>
                                         </td>
                                         :
                                         <td>

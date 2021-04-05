@@ -37,6 +37,8 @@ import Polls from "./user-view/Polls";
 import Vote from "./user-view/Vote";
 import Contact from "./contact/Contact";
 import WonTickets from "./tickets.provider.view/WonTickets";
+import RealEstate from "./real-estate/RealEstate";
+import Marketplace from "./marketplace/Marketplace";
 
 function App() {
   return (
@@ -92,6 +94,8 @@ function App() {
                 <Route exact path={'/polls'} component={Polls}/>
                 <Route exact path={'/vote'} component={Vote}/>
 
+                <Route exact path={'/real-estate'} component={RealEstate}/>
+                <Route exact path={'/marketplace'} component={Marketplace}/>
 
             </Router>
             </UserProvider>

@@ -24,7 +24,7 @@ function PresidentNavbar(props) {
             {value && value.roles.includes("PRESIDENT") ?
                 <Link className="nav-link" style={{"color": "white", "cursor" : "pointer"}} to={{
                     pathname : "/see-polls"}}>
-                    Polls
+                    <i className="fas fa-chart-bar"> </i> Polls
                 </Link>
                 :
                 null}

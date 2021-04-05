@@ -26,7 +26,11 @@ function SeePendingTickets(props) {
     const [redirect, setRedirect] = useState(false);
 
     useEffect(() => {
-        axios.get(`/ticket/${value.department}/${value.town}/with-offers`)
+        axios.get(`/ticket/${value.department}/${value.town}/with-offers`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+            })
             .then((response) => {
                 setResponseList(response.data);
             })

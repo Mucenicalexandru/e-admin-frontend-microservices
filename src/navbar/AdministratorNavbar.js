@@ -11,7 +11,7 @@ function AdministratorNavbar(props) {
     const [activeOffers, setActiveOffers] = useState(0);
 
     useEffect(() => {
-        value && !value.roles.includes("ADMIN") && !value.roles.includes("SERVICE_PROVIDER") &&
+        value && value.roles.includes("ADMINISTRATOR") &&
         axios.get(`/group/get-by-id/${value.groupId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token'),
@@ -19,6 +19,20 @@ function AdministratorNavbar(props) {
         })
             .then(response => {
                 setGroup(response.data);
+            })
+
+        value &&
+        axios.get(`/ticket/all-by-group-with-pending-offers/${value.groupId}/opened/Administrative`, {
+            headers: {
+                Authorization: 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+            .then((response) => {
+                let counter = 0;
+                response.data.forEach((response) => {
+                    counter += response.pendingOffer.length;
+                })
+                setActiveOffers(counter);
             })
 
     }, [value])
@@ -31,7 +45,7 @@ function AdministratorNavbar(props) {
             <Link to={{
                 pathname : "/see-offers",
                 type : "Administrative",
-                groupId : group.groupId}} style={{"color" : "white"}} className="nav-link" >Service Offers<span style={{"backgroundColor" : "white", "color" : "red", "padding" : "1.5px", "borderRadius" : "5px"}}>3</span></Link>}
+                groupId : group.groupId}} style={{"color" : "white"}} className="nav-link" >Service Offers (<b>{activeOffers}</b>)</Link>}
 
 {/*ADMINISTRATOR JOIN REQUESTS*/}
             {value && value.roles.includes("ADMINISTRATOR") && <PendingButton/>}
