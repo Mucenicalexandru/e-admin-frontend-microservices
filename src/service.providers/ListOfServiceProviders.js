@@ -6,7 +6,7 @@ import {departments} from "../util/departments";
 import {cities} from "../util/cities";
 import {AverageStarRating} from "../util/AverageStarRating";
 
-function ListOfServiceProviders(props) {
+function ListOfServiceProviders() {
 
     const value = useContext(UserContext);
     const [responseList, setResponseList] = useState();
@@ -152,7 +152,17 @@ function ListOfServiceProviders(props) {
                                         <td>No reviews received</td>
                                     }
                                     {value.roles.includes("ADMIN") ?
-                                        <td><button type="button" className="btn  btn-outline-danger btn-sm">Remove</button></td>
+                                        <td><button type="button" className="btn  btn-outline-danger btn-sm" onClick={(e) => {
+                                        e.preventDefault();
+                                            axios.delete(`/user/delete-by-userId/${response.user.userId}`, {
+                                                headers: {
+                                                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                                                }
+                                            })
+                                                .then(() => {
+                                                    setReset(!reset);
+                                                })}
+                                        }>Remove</button></td>
                                         :
                                         null
                                     }

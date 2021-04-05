@@ -87,7 +87,7 @@ function UserRegister(props) {
             }
         })
             .then((response) => {
-                if(response.status === 201){
+                if(response.status === 200){
                     setSuccessfullyRegistered(true)
                 }
             })

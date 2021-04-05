@@ -52,7 +52,7 @@ function TicketsAdministratorAndPersonalView(props) {
     const [administrator, setAdministrator] = useState({});
 
     useEffect(() => {
-        console.log(type)
+        //set the group info
         axios.get(`/group/get-by-id/${value.groupId}`, {
             headers: {
                 Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -62,14 +62,27 @@ function TicketsAdministratorAndPersonalView(props) {
                 setGroup(response.data);
             })
 
-        axios.get(`/ticket/all-by-group-with-pending-offers/${value.groupId}/${status}/${type}`, {
-            headers: {
-                Authorization: 'Bearer ' + localStorage.getItem('token')
-            }
+        if(type === "Administrative"){
+            axios.get(`/ticket/all-by-group-with-pending-offers/${value.groupId}/${status}/${type}`, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
             })
-            .then((response) => {
-                setResponseList(response.data);
+                .then((response) => {
+                    setResponseList(response.data);
+                })
+        }else if(type === "Personal"){
+            console.log("PErsonal")
+            axios.get(`/ticket/all-by-user-with-pending-offers/${value.userId}/${status}`, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token')
+                }
             })
+                .then((response) => {
+                    setResponseList(response.data);
+                })
+        }
+
 
         axios.get(`/user/${value.userId}`, {
             headers: {

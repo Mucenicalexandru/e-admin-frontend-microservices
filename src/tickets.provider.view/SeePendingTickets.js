@@ -104,29 +104,47 @@ function SeePendingTickets(props) {
                                 <td className="provider-ticket-opened-date">{response.ticket.dateOpened}</td>
                                 <td className="provider-ticket-status"><span className={"green"}>{response.ticket.status}</span></td>
                                 <td className={"ticket-type"}>{response.ticket.type}</td>
-                                <td className="provider-ticket-price-offer"><input style={{"width" : "150px"}} type="number" placeholder="Estimate price" onChange={(e) => {
-                                    const s = {...offer};
-                                    s.serviceProviderPrice = +e.target.value;
-                                    s.ticketId = response.ticket.ticketId;
-                                    s.serviceProviderUserId = value.userId;
-                                    setOffer(s);
-                                }}/></td>
 
-                                {response.pendingOffer.length > 0 ?
 
-                                    response.pendingOffer.map((offer, index) =>{
-                                        if(offer.serviceProviderUserId === value.userId){
-                                            return  <td key={index}>
-                                                <i>Already submitted</i>
-                                            </td>
-                                        }else{
-                                            return  <div>
-                                                <td className="ticket-make-offer">
-                                                    <button type="submit" className="btn btn-outline-success btn-sm">Submit</button>
-                                                </td>
-                                            </div>
-                                        }
-                                    })
+                                {response.providersWhoAlreadySubmittedTheirOffer.includes(value.userId) ?
+                                        <td> </td>
+                                        :
+                                        <td className="provider-ticket-price-offer">
+                                            <input style={{"width" : "150px"}} type="number" placeholder="Estimate price" onChange={(e) => {
+                                                const s = {...offer};
+                                                s.serviceProviderPrice = +e.target.value;
+                                                s.ticketId = response.ticket.ticketId;
+                                                s.serviceProviderUserId = value.userId;
+                                                setOffer(s);
+                                            }}/></td>
+                                }
+
+                                {response.providersWhoAlreadySubmittedTheirOffer.length > 0 ?
+                                    response.providersWhoAlreadySubmittedTheirOffer.includes(value.userId) ?
+                                        <td key={index}>
+                                            <i>Already submitted</i>
+                                        </td>
+                                        :
+                                        <td className="ticket-make-offer">
+                                            <button type="submit" className="btn btn-outline-success btn-sm">Submit</button>
+                                        </td>
+
+
+
+
+                                    // response.pendingOffer.map((offer, index) =>{
+                                    //     if(offer.serviceProviderUserId === value.userId){
+                                    //         return  <td key={index}>
+                                    //             <i>Already submitted</i>
+                                    //         </td>
+                                    //     }else{
+                                    //         return  <div>
+                                    //             <td className="ticket-make-offer">
+                                    //                 <button type="submit" className="btn btn-outline-success btn-sm">Submit</button>
+                                    //             </td>
+                                    //         </div>
+                                    //     }
+                                    // })
                                     :
                                     <td className="ticket-make-offer"><button type="submit" className="btn btn-outline-success btn-sm">Submit</button></td>
                                 }

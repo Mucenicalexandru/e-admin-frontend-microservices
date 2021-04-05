@@ -8,7 +8,9 @@ function AdminNavbar(props) {
 
     return (
         <div>{value && value.roles.includes("ADMIN") ?
-            <Link className="nav-link" style={{"color": "white"}} to={"/users-statistics"}>Users</Link>
+            <Link className="nav-link" style={{"color": "white"}} to={{
+                pathname : "/users-statistics"
+            }}>Users</Link>
             :
             null}</div>
     );

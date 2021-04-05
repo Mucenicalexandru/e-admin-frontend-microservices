@@ -103,8 +103,17 @@ function AddNewTicket(props) {
                                 s.userId = "";
 
                             s.department = e.target.value;
-                            s.buildingId = value.buildingId;
-                            s.groupId = value.groupId;
+
+                            value.roles.includes("USER") ?
+                                s.groupId = ""
+                                :
+                                s.groupId = value.groupId;
+
+                            value.roles.includes("USER") ?
+                                s.buildingId = ""
+                                :
+                                s.buildingId = value.buildingId;
+
                             setTicket(s);
                         }}>
                             <option value="" selected>Select department...</option>

@@ -162,7 +162,7 @@ function Groups(props) {
                     </div>
                     <div className='row align-items-center' style={{"padding": "0"}}>
                     {groupList.map((group, index) => {
-                        return <div key={index} className="card mx-auto card margin-bottom-25 margin-top-15">
+                        return <div key={index} className="card mx-auto card margin-bottom-25 margin-top-15 shadow">
                             <div>
                                 <img className="card-img-top" src={`/images/${group.picture}`} alt={group.officialName} style={{"width" : "250px", "height" : "175px", "marginLeft" : "17px", "marginTop" : "10px"}}/>
                             </div>

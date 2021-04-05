@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import styled from 'styled-components';
 import AuthenticationButton from "../login/AuthenticationButton";
 import {Link} from "react-router-dom";
@@ -20,19 +20,22 @@ const NavStyle = styled.div`
 function Navbar(props) {
 
     const value = useContext(UserContext);
+    const [language, setLanguage] = useState("English")
+
 
     return (
         <div>
             <NavStyle>
                 <div className="nav justify-content">
                     <Link to={"/"} className="nav-link" style={{"color": "white"}}>
-                        <i className="fas fa-home"> </i> Home</Link>
+                        <i className="fas fa-home"> </i> Home
+                    </Link>
 {/*NAVBAR BY ROLE*/}
                     <UserNavbar/>
                     <PresidentNavbar/>
                     <AdministratorNavbar/>
                     <ServiceProviderNavbar/>
-                    <AdminNavbar/>
+                    <AdminNavbar language={language}/>
 
 {/*GENERAL NAVBAR*/}
                     <ProviderListNavbarComponent/>
@@ -47,11 +50,13 @@ function Navbar(props) {
                     <div>
                         <img className="card " src={`/images/romania.png`} alt={"Smart City Picture"} style={{"width" : "38px", "height" : "28px","borderRadius": "10px", "marginRight" : "5px", "marginLeft" : "130px", "marginTop" : "7px", "cursor" : "pointer"}} onClick={(e) => {
                             e.preventDefault();
+                            setLanguage("Romanian");
                         }}/>
                     </div>
                     <div>
                         <img className="card " src={`/images/english.jpeg`} alt={"Smart City Picture"} style={{"width" : "38px", "height" : "28px","borderRadius": "10px", "marginTop" : "7px", "cursor" : "pointer"}} onClick={(e) => {
                             e.preventDefault();
+                            setLanguage("English");
                         }}/>
                     </div>
 
