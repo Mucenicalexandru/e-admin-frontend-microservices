@@ -60,6 +60,7 @@ function Groups(props) {
 
     return (
         <>
+
             { value
                 ?
                 <div>
@@ -100,7 +101,7 @@ function Groups(props) {
                     {groupList.map((group, index) => {
                         return <div key={index} className="card mx-auto card margin-bottom-25 margin-top-15 shadow">
                             <div>
-                                <img className="card-img-top" src={`/images/${group.picture}`} alt={group.officialName} style={{"width" : "250px", "height" : "175px", "marginLeft" : "17px", "marginTop" : "10px"}}/>
+                                <img className="card-img-top" src={`https://practice-bucket-alex.s3.eu-de.cloud-object-storage.appdomain.cloud/${group.picture}`} alt={group.officialName} style={{"width" : "250px", "height" : "175px", "marginLeft" : "17px", "marginTop" : "10px"}}/>
                             </div>
                             {value.roles.includes("ADMIN") ?
                                 <div className="card-body">
